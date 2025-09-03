@@ -3,7 +3,7 @@ import {
   createCustomerSchema,
   CustomerProps,
   CustomerSchema,
-} from "../../interfaces/customer";
+} from "../../interfaces/customer.interface";
 import { generateEntityID } from "../../utils/generate-id";
 import { BadRequestError } from "../errors/shared";
 

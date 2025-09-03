@@ -3,7 +3,7 @@ import {
   barberSchema,
   CreateBarberProps,
   createBarberSchema,
-} from "../../interfaces/barber";
+} from "../../interfaces/barber.interface";
 import { generateEntityID } from "../../utils/generate-id";
 import { BadRequestError } from "../errors/shared";
 
