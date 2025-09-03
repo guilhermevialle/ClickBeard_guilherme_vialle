@@ -3,9 +3,9 @@ import { idSchema } from "../utils/id-schema";
 
 // aqui temos os campos obrigatorios para criacao
 export const createCustomerSchema = z.object({
-  name: z.string(),
-  email: z.email(),
-  password: z.string(),
+  name: z.string("Name must be a string"),
+  email: z.email("Email must be a valid email"),
+  password: z.string("Password must be a string"),
 });
 
 // aqui poderiamos adicionar createdAt e updatedAt por exemplo
