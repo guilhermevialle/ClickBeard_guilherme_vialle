@@ -1,1 +1,68 @@
-export class Appointment {}
+import {
+  AppointmentProps,
+  appointmentSchema,
+  CreateAppointmentProps,
+  createAppointmentSchema,
+} from "../../interfaces/appointment.interface";
+import { generateEntityID } from "../../utils/generate-id";
+import { BadRequestError } from "../errors/shared";
+
+export class Appointment {
+  private props: AppointmentProps;
+
+  private constructor(props: AppointmentProps) {
+    this.props = props;
+  }
+
+  static create(props: CreateAppointmentProps) {
+    const result = createAppointmentSchema.safeParse(props);
+    if (!result.success) {
+      throw new BadRequestError("Invalid appointment creation props");
+    }
+
+    return new Appointment({
+      id: generateEntityID(),
+      customerId: result.data.customerId,
+      barberId: result.data.barberId,
+      specialtyId: result.data.specialtyId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+  }
+
+  static from(props: AppointmentProps) {
+    const result = appointmentSchema.safeParse(props);
+    if (!result.success) {
+      throw new BadRequestError("Invalid appointment restore props");
+    }
+
+    return new Appointment({
+      id: result.data.id,
+      customerId: result.data.customerId,
+      barberId: result.data.barberId,
+      specialtyId: result.data.specialtyId,
+      createdAt: result.data.createdAt,
+      updatedAt: result.data.updatedAt,
+    });
+  }
+
+  // getters
+  get id() {
+    return this.props.id;
+  }
+  get customerId() {
+    return this.props.customerId;
+  }
+  get barberId() {
+    return this.props.barberId;
+  }
+  get specialtyId() {
+    return this.props.specialtyId;
+  }
+  get createdAt() {
+    return this.props.createdAt;
+  }
+  get updatedAt() {
+    return this.props.updatedAt;
+  }
+}
