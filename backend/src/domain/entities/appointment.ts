@@ -17,7 +17,7 @@ export class Appointment {
   static create(props: CreateAppointmentProps) {
     const result = createAppointmentSchema.safeParse(props);
     if (!result.success) {
-      throw new InvalidInputError("Invalid appointment creation props");
+      throw new InvalidInputError(result.error.message);
     }
 
     return new Appointment({
@@ -33,7 +33,7 @@ export class Appointment {
   static from(props: AppointmentProps) {
     const result = appointmentSchema.safeParse(props);
     if (!result.success) {
-      throw new InvalidInputError("Invalid appointment restore props");
+      throw new InvalidInputError(result.error.message);
     }
 
     return new Appointment({

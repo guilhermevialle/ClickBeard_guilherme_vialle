@@ -17,8 +17,7 @@ export class Customer {
   static create(props: CreateCustomerProps) {
     const result = createCustomerSchema.safeParse(props);
 
-    if (!result.success)
-      throw new InvalidInputError("Invalid customer creation props");
+    if (!result.success) throw new InvalidInputError(result.error.message);
 
     return new Customer({
       id: generateEntityID(),
@@ -31,8 +30,7 @@ export class Customer {
   static from(props: CustomerProps) {
     const result = CustomerSchema.safeParse(props);
 
-    if (!result.success)
-      throw new InvalidInputError("Invalid customer restore props");
+    if (!result.success) throw new InvalidInputError(result.error.message);
 
     return new Customer({
       id: result.data.id,

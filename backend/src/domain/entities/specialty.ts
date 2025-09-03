@@ -16,8 +16,7 @@ export class Specialty {
 
   static create(props: CreateSpecialtyProps) {
     const result = createSpecialtySchema.safeParse(props);
-    if (!result.success)
-      throw new InvalidInputError("Invalid specialty creation props");
+    if (!result.success) throw new InvalidInputError(result.error.message);
 
     return new Specialty({
       id: generateEntityID(),
@@ -28,8 +27,7 @@ export class Specialty {
 
   static from(props: SpecialtyProps) {
     const result = specialtySchema.safeParse(props);
-    if (!result.success)
-      throw new InvalidInputError("Invalid specialty restore props");
+    if (!result.success) throw new InvalidInputError(result.error.message);
 
     return new Specialty({
       id: result.data.id,

@@ -16,8 +16,7 @@ export class Barber {
 
   static create(props: CreateBarberProps) {
     const result = createBarberSchema.safeParse(props);
-    if (!result.success)
-      throw new InvalidInputError("Invalid barber creation props");
+    if (!result.success) throw new InvalidInputError(result.error.message);
 
     return new Barber({
       id: generateEntityID(),
@@ -29,8 +28,7 @@ export class Barber {
 
   static from(props: BarberProps) {
     const result = barberSchema.safeParse(props);
-    if (!result.success)
-      throw new InvalidInputError("Invalid barber restore props");
+    if (!result.success) throw new InvalidInputError(result.error.message);
 
     return new Barber({
       id: result.data.id,
