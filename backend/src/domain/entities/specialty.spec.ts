@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BadRequestError } from "../errors/shared";
+import { InvalidInputError } from "../errors/shared";
 import { Specialty } from "./specialty";
 
 describe("Specialty Entity", () => {
@@ -29,17 +29,17 @@ describe("Specialty Entity", () => {
       Specialty.create({
         name: "",
       } as any)
-    ).toThrow(BadRequestError);
+    ).toThrow(InvalidInputError);
     expect(() =>
       Specialty.from({
         id: "specialty-123",
         name: "",
       } as any)
-    ).toThrow(BadRequestError);
+    ).toThrow(InvalidInputError);
     expect(() =>
       Specialty.from({
         name: "Beard",
       } as any)
-    ).toThrow(BadRequestError);
+    ).toThrow(InvalidInputError);
   });
 });

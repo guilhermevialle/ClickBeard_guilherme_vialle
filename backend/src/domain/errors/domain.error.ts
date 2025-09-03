@@ -1,16 +1,14 @@
-interface DomainErrorProps {
-  message?: string;
-  errorCode: string;
-  statusCode: number;
-}
-
 export const DOMAIN_ERROR = {
-  BAD_REQUEST: {
-    message: "Bad request",
-    errorCode: "BAD_REQUEST",
-    statusCode: 400,
+  invalidInput: {
+    message: "Invalid input data",
+    errorCode: "INVALID_INPUT",
   },
-} as const;
+};
+
+interface DomainErrorProps {
+  message: string;
+  errorCode: string;
+}
 
 export class DomainError extends Error {
   constructor(public readonly props: DomainErrorProps) {

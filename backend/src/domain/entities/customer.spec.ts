@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BadRequestError } from "../errors/shared";
+import { InvalidInputError } from "../errors/shared";
 import { Customer } from "./customer";
 
 describe("Customer Entity", () => {
@@ -37,7 +37,7 @@ describe("Customer Entity", () => {
         email: "not-an-email",
         password: "",
       } as any)
-    ).toThrow(BadRequestError);
+    ).toThrow(InvalidInputError);
     expect(() =>
       Customer.from({
         id: "",
@@ -45,7 +45,7 @@ describe("Customer Entity", () => {
         email: "not-an-email",
         password: "",
       } as any)
-    ).toThrow(BadRequestError);
+    ).toThrow(InvalidInputError);
   });
   expect(() =>
     Customer.from({
@@ -53,5 +53,5 @@ describe("Customer Entity", () => {
       email: "email@email.com",
       password: "any_password",
     } as any)
-  ).toThrow(BadRequestError);
+  ).toThrow(InvalidInputError);
 });

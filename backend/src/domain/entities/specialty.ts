@@ -5,7 +5,7 @@ import {
   specialtySchema,
 } from "../../interfaces/specialty.interface";
 import { generateEntityID } from "../../utils/generate-id";
-import { BadRequestError } from "../errors/shared";
+import { InvalidInputError } from "../errors/shared";
 
 export class Specialty {
   private props: SpecialtyProps;
@@ -17,7 +17,7 @@ export class Specialty {
   static create(props: CreateSpecialtyProps) {
     const result = createSpecialtySchema.safeParse(props);
     if (!result.success)
-      throw new BadRequestError("Invalid specialty creation props");
+      throw new InvalidInputError("Invalid specialty creation props");
 
     return new Specialty({
       id: generateEntityID(),
@@ -29,7 +29,7 @@ export class Specialty {
   static from(props: SpecialtyProps) {
     const result = specialtySchema.safeParse(props);
     if (!result.success)
-      throw new BadRequestError("Invalid specialty restore props");
+      throw new InvalidInputError("Invalid specialty restore props");
 
     return new Specialty({
       id: result.data.id,

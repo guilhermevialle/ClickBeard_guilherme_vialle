@@ -5,7 +5,7 @@ import {
   createAppointmentSchema,
 } from "../../interfaces/appointment.interface";
 import { generateEntityID } from "../../utils/generate-id";
-import { BadRequestError } from "../errors/shared";
+import { InvalidInputError } from "../errors/shared";
 
 export class Appointment {
   private props: AppointmentProps;
@@ -17,7 +17,7 @@ export class Appointment {
   static create(props: CreateAppointmentProps) {
     const result = createAppointmentSchema.safeParse(props);
     if (!result.success) {
-      throw new BadRequestError("Invalid appointment creation props");
+      throw new InvalidInputError("Invalid appointment creation props");
     }
 
     return new Appointment({
@@ -33,7 +33,7 @@ export class Appointment {
   static from(props: AppointmentProps) {
     const result = appointmentSchema.safeParse(props);
     if (!result.success) {
-      throw new BadRequestError("Invalid appointment restore props");
+      throw new InvalidInputError("Invalid appointment restore props");
     }
 
     return new Appointment({

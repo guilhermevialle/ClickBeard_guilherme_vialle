@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BadRequestError } from "../errors/shared";
+import { InvalidInputError } from "../errors/shared";
 import { Barber } from "./barber";
 
 describe("Barber Entity", () => {
@@ -37,7 +37,7 @@ describe("Barber Entity", () => {
         age: -5,
         hiredAt: "invalid-date" as any,
       } as any)
-    ).toThrow(BadRequestError);
+    ).toThrow(InvalidInputError);
     expect(() =>
       Barber.from({
         id: "barber-123",
@@ -45,13 +45,13 @@ describe("Barber Entity", () => {
         age: -10,
         hiredAt: "invalid-date" as any,
       } as any)
-    ).toThrow(BadRequestError);
+    ).toThrow(InvalidInputError);
     expect(() =>
       Barber.from({
         name: "Jane Doe",
         age: 25,
         hiredAt: new Date("2024-06-01"),
       } as any)
-    ).toThrow(BadRequestError);
+    ).toThrow(InvalidInputError);
   });
 });

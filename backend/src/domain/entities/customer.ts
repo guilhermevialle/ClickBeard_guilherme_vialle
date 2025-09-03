@@ -5,7 +5,7 @@ import {
   CustomerSchema,
 } from "../../interfaces/customer.interface";
 import { generateEntityID } from "../../utils/generate-id";
-import { BadRequestError } from "../errors/shared";
+import { InvalidInputError } from "../errors/shared";
 
 export class Customer {
   private props: CustomerProps;
@@ -18,7 +18,7 @@ export class Customer {
     const result = createCustomerSchema.safeParse(props);
 
     if (!result.success)
-      throw new BadRequestError("Invalid customer creation props");
+      throw new InvalidInputError("Invalid customer creation props");
 
     return new Customer({
       id: generateEntityID(),
@@ -32,7 +32,7 @@ export class Customer {
     const result = CustomerSchema.safeParse(props);
 
     if (!result.success)
-      throw new BadRequestError("Invalid customer restore props");
+      throw new InvalidInputError("Invalid customer restore props");
 
     return new Customer({
       id: result.data.id,

@@ -5,7 +5,7 @@ import {
   createBarberSchema,
 } from "../../interfaces/barber.interface";
 import { generateEntityID } from "../../utils/generate-id";
-import { BadRequestError } from "../errors/shared";
+import { InvalidInputError } from "../errors/shared";
 
 export class Barber {
   private props: BarberProps;
@@ -17,7 +17,7 @@ export class Barber {
   static create(props: CreateBarberProps) {
     const result = createBarberSchema.safeParse(props);
     if (!result.success)
-      throw new BadRequestError("Invalid barber creation props");
+      throw new InvalidInputError("Invalid barber creation props");
 
     return new Barber({
       id: generateEntityID(),
@@ -30,7 +30,7 @@ export class Barber {
   static from(props: BarberProps) {
     const result = barberSchema.safeParse(props);
     if (!result.success)
-      throw new BadRequestError("Invalid barber restore props");
+      throw new InvalidInputError("Invalid barber restore props");
 
     return new Barber({
       id: result.data.id,
