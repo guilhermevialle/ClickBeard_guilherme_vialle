@@ -39,8 +39,21 @@ export class BarberWorkday {
     });
   }
 
-  public addShift(shift: BarberWorkdayShift) {
-    this.props.shifts.push(shift);
+  public addShifts(
+    shifts: Array<{
+      startAtInMinutes: number;
+      endAtInMinutes: number;
+    }>
+  ) {
+    shifts.forEach((s) => {
+      this.props.shifts.push(
+        BarberWorkdayShift.create({
+          workdayId: this.props.id,
+          endAtInMinutes: s.endAtInMinutes,
+          startAtInMinutes: s.startAtInMinutes,
+        })
+      );
+    });
   }
 
   public toJSON() {

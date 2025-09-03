@@ -42,30 +42,30 @@ export class Barber {
     });
   }
 
-  private updateWorkday(workday: BarberWorkday) {
-    const index = this.props.workdays.findIndex(
-      (wd) => wd.weekday === workday.weekday
-    );
+  public addWorkdayWithShifts(
+    day: number,
+    shifts: Array<{
+      startAtInMinutes: number;
+      endAtInMinutes: number;
+    }>
+  ) {
+    const wd = BarberWorkday.create({
+      barberId: this.props.id,
+      weekday: day,
+    });
 
-    this.props.workdays[index] = workday;
+    wd.addShifts(shifts);
+    this.props.workdays.push(wd);
   }
 
-  // public methods
-  public addWorkday(workday: BarberWorkday) {
-    if (this.isWorkingAtDay(workday.weekday))
-      return this.updateWorkday(workday);
-
-    this.props.workdays.push(workday);
-  }
-
-  public removeWorkday(workdayId: string) {
+  removeWorkday(day: number) {
     this.props.workdays = this.props.workdays.filter(
-      (wd) => wd.id !== workdayId
+      (wd) => wd.weekday !== day
     );
   }
 
-  public isWorkingAtDay(weekday: number) {
-    return this.props.workdays.some((wd) => wd.weekday === weekday);
+  public isWorkingAtDay(day: number) {
+    return this.props.workdays.some((wd) => wd.weekday === day);
   }
 
   public toJSON() {
@@ -74,7 +74,7 @@ export class Barber {
       name: this.name,
       age: this.age,
       hiredAt: this.hiredAt,
-      workdays: this.workdays.map((wd) => wd.toJSON()),
+      workdays: this.workdays.map((wd) => wd.toJSON())!,
     };
   }
 
