@@ -6,6 +6,7 @@ import {
 } from "../../interfaces/barber-workday.interface";
 import { generateEntityID } from "../../utils/generate-id";
 import { InvalidInputError } from "../errors/shared";
+import { BarberWorkdayShift } from "./barber-workday-shift";
 
 export class BarberWorkday {
   private props: BarberWorkdayProps;
@@ -14,7 +15,6 @@ export class BarberWorkday {
     this.props = props;
   }
 
-  // static methods
   static create(props: CreateBarberWorkdayProps) {
     const result = createBarberWorkdaySchema.safeParse(props);
     if (!result.success) throw new InvalidInputError(result.error.message);
@@ -23,6 +23,7 @@ export class BarberWorkday {
       id: generateEntityID(),
       barberId: result.data.barberId,
       weekday: result.data.weekday,
+      shifts: [],
     });
   }
 
@@ -34,12 +35,28 @@ export class BarberWorkday {
       id: result.data.id,
       barberId: result.data.barberId,
       weekday: result.data.weekday,
+      shifts: result.data.shifts,
     });
   }
 
-  // getters
+  public addShift(shift: BarberWorkdayShift) {
+    this.props.shifts.push(shift);
+  }
+
+  public toJSON() {
+    return {
+      id: this.id,
+      barberId: this.barberId,
+      weekday: this.weekday,
+      shifts: this.shifts.map((s) => s.toJSON()),
+    };
+  }
+
   get id() {
     return this.props.id;
+  }
+  get shifts() {
+    return this.props.shifts;
   }
   get barberId() {
     return this.props.barberId;

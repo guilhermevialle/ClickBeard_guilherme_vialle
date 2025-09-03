@@ -46,6 +46,15 @@ export class BarberWorkdayShift {
     });
   }
 
+  public toJSON() {
+    return {
+      id: this.id,
+      workdayId: this.workdayId,
+      startAtInMinutes: this.startAtInMinutes,
+      endAtInMinutes: this.endAtInMinutes,
+    };
+  }
+
   // getters
   get id() {
     return this.props.id;

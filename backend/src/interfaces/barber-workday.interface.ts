@@ -1,4 +1,5 @@
 import z from "zod";
+import { BarberWorkdayShift } from "../domain/entities/barber-workday-shift";
 import { idSchema } from "../utils/id-schema";
 
 export const createBarberWorkdaySchema = z.object({
@@ -12,6 +13,7 @@ export const createBarberWorkdaySchema = z.object({
 
 export const optionalBarberWorkdaySchema = z.object({
   id: idSchema().optional(),
+  shifts: z.array(z.instanceof(BarberWorkdayShift)).optional(),
 });
 
 export const barberWorkdaySchema = createBarberWorkdaySchema.merge(

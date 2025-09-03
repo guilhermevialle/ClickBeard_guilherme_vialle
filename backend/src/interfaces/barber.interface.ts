@@ -1,4 +1,5 @@
 import z from "zod";
+import { BarberWorkday } from "../domain/entities/barber-workday";
 import { idSchema } from "../utils/id-schema";
 
 // campos obrigatórios para criacao
@@ -16,6 +17,7 @@ export const createBarberSchema = z.object({
 // campos opcionais
 export const partialBarberSchema = z.object({
   id: idSchema().optional(),
+  workdays: z.array(z.instanceof(BarberWorkday)).optional(),
 });
 
 // schema final para entidade
