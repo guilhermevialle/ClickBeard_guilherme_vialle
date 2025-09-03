@@ -1,11 +1,12 @@
 {
   "name": "backend",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/server.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "test:file": "vitest --watch"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "date-fns": "^4.1.0",
     "fastify": "^5.5.0",
     "nanoid": "^3.3.11",
     "zod": "^4.1.5"

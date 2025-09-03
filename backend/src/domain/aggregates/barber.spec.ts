@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { InvalidInputError } from "../errors/shared";
 import { Barber } from "./barber";
 
-describe("Barber Entity", () => {
+describe("Barber Aggregate", () => {
   it("should create a barber properly", () => {
     const barber = Barber.create({
       name: "John Doe",

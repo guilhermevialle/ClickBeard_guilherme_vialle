@@ -25,6 +25,8 @@ export class Appointment {
       customerId: result.data.customerId,
       barberId: result.data.barberId,
       specialtyId: result.data.specialtyId,
+      durationInMinutes: result.data.durationInMinutes,
+      startAt: result.data.startAt,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -41,6 +43,8 @@ export class Appointment {
       customerId: result.data.customerId,
       barberId: result.data.barberId,
       specialtyId: result.data.specialtyId,
+      durationInMinutes: result.data.durationInMinutes,
+      startAt: result.data.startAt,
       createdAt: result.data.createdAt,
       updatedAt: result.data.updatedAt,
     });
@@ -58,6 +62,12 @@ export class Appointment {
   }
   get specialtyId() {
     return this.props.specialtyId;
+  }
+  get durationInMinutes() {
+    return this.props.durationInMinutes;
+  }
+  get startAt() {
+    return this.props.startAt;
   }
   get createdAt() {
     return this.props.createdAt;
