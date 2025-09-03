@@ -30,7 +30,7 @@ describe("Customer Entity", () => {
     expect(customer.password).toBe("any_password");
   });
 
-  it("should throw BadRequestError when creating with invalid props", () => {
+  it("should throw InvalidInputError when creating with invalid props", () => {
     expect(() =>
       Customer.create({
         name: "",

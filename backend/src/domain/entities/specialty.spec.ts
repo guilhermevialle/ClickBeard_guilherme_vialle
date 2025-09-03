@@ -24,7 +24,7 @@ describe("Specialty Entity", () => {
     expect(specialty.name).toBe("Beard");
   });
 
-  it("should throw BadRequestError when creating with invalid props", () => {
+  it("should throw InvalidInputError when creating with invalid props", () => {
     expect(() =>
       Specialty.create({
         name: "",

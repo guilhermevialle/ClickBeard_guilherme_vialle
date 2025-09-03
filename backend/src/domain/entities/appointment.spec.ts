@@ -39,7 +39,7 @@ describe("Appointment Entity", () => {
     expect(appointment.updatedAt).toEqual(updatedAt);
   });
 
-  it("should throw BadRequestError when creating with invalid props", () => {
+  it("should throw InvalidInputError when creating with invalid props", () => {
     expect(() =>
       Appointment.create({
         barberId: "",

@@ -30,7 +30,7 @@ describe("Barber Entity", () => {
     expect(barber.hiredAt).toEqual(new Date("2024-06-01"));
   });
 
-  it("should throw BadRequestError when creating with invalid props", () => {
+  it("should throw InvalidInputError when creating with invalid props", () => {
     expect(() =>
       Barber.create({
         name: "",
