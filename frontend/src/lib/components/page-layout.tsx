@@ -12,7 +12,7 @@ export default function PageLayout({
   return (
     <div
       {...rest}
-      className={twMerge("container mx-auto max-w-3xl", className)}
+      className={twMerge("container mx-auto h-full max-w-3xl", className)}
     >
       {children}
     </div>

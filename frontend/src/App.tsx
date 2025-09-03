@@ -2,8 +2,9 @@ import Slogan from "./features/slogan";
 
 export default function App() {
   return (
-    <main className="h-screen w-full bg-[#0d0d0d]">
+    <main className="relative h-screen w-full bg-[#0d0d0d]">
       <Slogan />
+      <div className="absolute inset-0 z-0 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#6d6d6d_100%)]"></div>
     </main>
   );
 }
