@@ -6,6 +6,7 @@ describe("Specialty Entity", () => {
   it("should create a specialty properly", () => {
     const specialty = Specialty.create({
       name: "Haircut",
+      durationInMinutes: 30,
     });
 
     expect(specialty.id).toBeDefined();
@@ -16,6 +17,7 @@ describe("Specialty Entity", () => {
     const specialty = Specialty.from({
       id: "specialty-123",
       name: "Beard",
+      durationInMinutes: 30,
     });
 
     expect(specialty.id).toBe("specialty-123");
@@ -28,18 +30,12 @@ describe("Specialty Entity", () => {
         name: "",
       } as any)
     ).toThrow(BadRequestError);
-  });
-
-  it("should throw BadRequestError when restoring with invalid props", () => {
     expect(() =>
       Specialty.from({
         id: "specialty-123",
         name: "",
       } as any)
     ).toThrow(BadRequestError);
-  });
-
-  it("should throw BadRequestError when restoring without id", () => {
     expect(() =>
       Specialty.from({
         name: "Beard",

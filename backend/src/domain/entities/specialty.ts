@@ -22,6 +22,7 @@ export class Specialty {
     return new Specialty({
       id: generateEntityID(),
       name: result.data.name,
+      durationInMinutes: result.data.durationInMinutes,
     });
   }
 
@@ -33,6 +34,7 @@ export class Specialty {
     return new Specialty({
       id: result.data.id,
       name: result.data.name,
+      durationInMinutes: result.data.durationInMinutes,
     });
   }
 

@@ -5,6 +5,10 @@ export const createSpecialtySchema = z.object({
   name: z
     .string("Name must be a string")
     .min(1, "Name must have at least 1 character"),
+  durationInMinutes: z
+    .number("Duration must be a number")
+    .int("Duration must be an integer")
+    .positive("Duration must be greater than 0"),
 });
 
 export const partialSpecialtySchema = z.object({

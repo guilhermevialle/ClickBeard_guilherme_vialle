@@ -1,21 +1,21 @@
 import z from "zod";
 import { idSchema } from "../utils/id-schema";
 
-// Props obrigatórios para criação
+// props obrigatorios
 export const createAppointmentSchema = z.object({
   customerId: idSchema("customerId"),
   barberId: idSchema("barberId"),
   specialtyId: idSchema("specialtyId"),
 });
 
-// Campos opcionais (id, createdAt, updatedAt)
+// pode adicionar mais props nao necessarias para o create
 export const partialAppointmentSchema = z.object({
   id: idSchema().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
 });
 
-// Schema final
+// juntando tudo
 export const appointmentSchema = createAppointmentSchema.merge(
   partialAppointmentSchema.required()
 );

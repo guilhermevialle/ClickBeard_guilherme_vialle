@@ -16,9 +16,8 @@ export class Customer {
 
   static create(props: CreateCustomerProps) {
     const result = createCustomerSchema.safeParse(props);
-    const arePropsValid = result.success;
 
-    if (!arePropsValid)
+    if (!result.success)
       throw new BadRequestError("Invalid customer creation props");
 
     return new Customer({
@@ -31,9 +30,8 @@ export class Customer {
 
   static from(props: CustomerProps) {
     const result = CustomerSchema.safeParse(props);
-    const arePropsValid = result.success;
 
-    if (!arePropsValid)
+    if (!result.success)
       throw new BadRequestError("Invalid customer restore props");
 
     return new Customer({

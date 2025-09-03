@@ -46,9 +46,6 @@ describe("Appointment Entity", () => {
         specialtyId: "",
       } as any)
     ).toThrow(BadRequestError);
-  });
-
-  it("should throw BadRequestError when restoring with invalid props", () => {
     expect(() =>
       Appointment.from({
         id: "appointment-123",
@@ -57,16 +54,13 @@ describe("Appointment Entity", () => {
       } as any)
     ).toThrow(BadRequestError);
   });
-
-  it("should throw BadRequestError when restoring without id", () => {
-    expect(() =>
-      Appointment.from({
-        customerId: "customer-123",
-        barberId: "barber-456",
-        specialtyId: "specialty-789",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      } as any)
-    ).toThrow(BadRequestError);
-  });
+  expect(() =>
+    Appointment.from({
+      customerId: "customer-123",
+      barberId: "barber-456",
+      specialtyId: "specialty-789",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as any)
+  ).toThrow(BadRequestError);
 });

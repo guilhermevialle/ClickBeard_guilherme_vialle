@@ -38,9 +38,6 @@ describe("Barber Entity", () => {
         hiredAt: "invalid-date" as any,
       } as any)
     ).toThrow(BadRequestError);
-  });
-
-  it("should throw BadRequestError when restoring with invalid props", () => {
     expect(() =>
       Barber.from({
         id: "barber-123",
@@ -49,9 +46,6 @@ describe("Barber Entity", () => {
         hiredAt: "invalid-date" as any,
       } as any)
     ).toThrow(BadRequestError);
-  });
-
-  it("should throw BadRequestError when restoring without id", () => {
     expect(() =>
       Barber.from({
         name: "Jane Doe",
