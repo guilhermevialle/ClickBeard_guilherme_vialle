@@ -16,8 +16,8 @@ import PageLayout from "../../lib/components/page-layout";
 import { authenticate } from "../../services/api/auth";
 
 const loginSchema = z.object({
-  email: z.string().email("Email inválido"),
-  password: z.string().min(6, "A senha deve ter no mínimo 6 caracteres"),
+  email: z.email("Email inválido").min(1, "Email obrigatório"),
+  password: z.string(),
 });
 
 type LoginFormInputs = z.infer<typeof loginSchema>;

@@ -81,7 +81,7 @@ export default function Navbar({ className, ...rest }: NavbarProps) {
         ) : (
           <Link
             to={"/login"}
-            className="flex h-9 cursor-pointer items-center justify-center gap-1 rounded-full border border-white/5 bg-blue-800/20 pr-4 pl-6 font-medium tracking-tight text-blue-300 hover:opacity-85"
+            className="flex h-9 cursor-pointer items-center justify-center gap-1 rounded-full border border-white/5 bg-blue-800/15 pr-4 pl-6 font-medium tracking-tight text-blue-200 hover:opacity-85"
           >
             Fazer login
             <LucideChevronRight className="ml-2 size-[18px]" />
