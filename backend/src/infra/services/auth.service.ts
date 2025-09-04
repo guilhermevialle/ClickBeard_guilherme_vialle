@@ -9,8 +9,8 @@ import {
   RegisterBarberDto,
   RegisterCustomerDto,
   UserSession,
-} from "../dtos/auth.dto";
-import { AuthTokenPayload } from "../dtos/token.dto";
+} from "../http/dtos/auth.dto";
+import { AuthTokenPayload } from "../http/dtos/token.dto";
 import type { ICustomerRepository } from "../interfaces/repositories/customer-repository.interface";
 import type { IAuthService } from "../interfaces/services/auth-service.interface";
 import type { IHashService } from "../interfaces/services/hash-service.interface";

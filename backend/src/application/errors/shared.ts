@@ -31,6 +31,36 @@ export class CustomerNotFoundError extends ApplicationError {
   }
 }
 
+export class PendingAppointmentError extends ApplicationError {
+  constructor(message?: string) {
+    super({
+      message: message ?? APPLICATION_ERROR.PENDING_APPOINTMENT.message,
+      errorCode: APPLICATION_ERROR.PENDING_APPOINTMENT.errorCode,
+      statusCode: APPLICATION_ERROR.PENDING_APPOINTMENT.statusCode,
+    });
+  }
+}
+
+export class BarberNotAvailableError extends ApplicationError {
+  constructor(message?: string) {
+    super({
+      message: message ?? APPLICATION_ERROR.BARBER_NOT_AVAILABLE.message,
+      errorCode: APPLICATION_ERROR.BARBER_NOT_AVAILABLE.errorCode,
+      statusCode: APPLICATION_ERROR.BARBER_NOT_AVAILABLE.statusCode,
+    });
+  }
+}
+
+export class BarberNotFoundError extends ApplicationError {
+  constructor(message?: string) {
+    super({
+      message: message ?? APPLICATION_ERROR.BARBER_NOT_FOUND.message,
+      errorCode: APPLICATION_ERROR.BARBER_NOT_FOUND.errorCode,
+      statusCode: APPLICATION_ERROR.BARBER_NOT_FOUND.statusCode,
+    });
+  }
+}
+
 export class InvalidCredentialsError extends ApplicationError {
   constructor(message?: string) {
     super({

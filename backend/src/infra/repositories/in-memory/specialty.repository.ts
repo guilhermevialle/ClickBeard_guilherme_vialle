@@ -1,5 +1,5 @@
 import { Specialty } from "../../../domain/entities/specialty";
-import { ISpecialtyRepository } from "../../interfaces/repositories/specialty-repository";
+import { ISpecialtyRepository } from "../../interfaces/repositories/specialty-repository.interface";
 
 export class InMemorySpecialtyRepository implements ISpecialtyRepository {
   private specialties: Specialty[] = [

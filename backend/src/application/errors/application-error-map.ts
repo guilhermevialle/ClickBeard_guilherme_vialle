@@ -1,4 +1,19 @@
 export const APPLICATION_ERROR = {
+  BARBER_NOT_AVAILABLE: {
+    message: "Barber not available",
+    errorCode: "BARBER_NOT_AVAILABLE",
+    statusCode: 409,
+  },
+  PENDING_APPOINTMENT: {
+    message: "There is a pending appointment",
+    errorCode: "PENDING_APPOINTMENT",
+    statusCode: 409,
+  },
+  BARBER_NOT_FOUND: {
+    message: "Barber not found",
+    errorCode: "BARBER_NOT_FOUND",
+    statusCode: 404,
+  },
   BARBER_ALREADY_EXISTS: {
     message: "Barber already exists",
     errorCode: "BARBER_ALREADY_EXISTS",

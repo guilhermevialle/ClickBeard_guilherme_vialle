@@ -1,21 +1,30 @@
 import { container } from "tsyringe";
+import { CreateAppointment } from "./application/use-cases/create-appointment";
 import { CreateBarberWithSpecialties } from "./application/use-cases/create-barber-with-specialties";
 import { CreateSpecialty } from "./application/use-cases/create-specialty";
+import { FindBarberSlotsByDate } from "./application/use-cases/find-barber-slots-by-date";
 import { GetAllBarberSpecialty } from "./application/use-cases/get-all-barber-specialty";
 import { GetAllBarbers } from "./application/use-cases/get-all-barbers";
 import { GetAllBarbersForBff } from "./application/use-cases/get-all-barbers-for-bff";
 import { GetAllSpecialties } from "./application/use-cases/get-all-specialties";
+import { PrismaClient } from "./generated/prisma";
+import { AuthMiddleware } from "./infra/http/middlewares/auth.middleware";
+import { IAppointmentRepository } from "./infra/interfaces/repositories/appointment-repository.interface";
 import { IBarberRepository } from "./infra/interfaces/repositories/barber-repository.interface";
 import { IBarberSpecialtyRepository } from "./infra/interfaces/repositories/barber-specialty-repository.interface";
 import { ICustomerRepository } from "./infra/interfaces/repositories/customer-repository.interface";
-import { ISpecialtyRepository } from "./infra/interfaces/repositories/specialty-repository";
+import { ISpecialtyRepository } from "./infra/interfaces/repositories/specialty-repository.interface";
 import type { IAuthService } from "./infra/interfaces/services/auth-service.interface";
+import { IBarberAvailabilityService } from "./infra/interfaces/services/barber-availability-service.interface";
 import type { IHashService } from "./infra/interfaces/services/hash-service.interface";
-import { InMemoryBarberSpecialtyRepository } from "./infra/repositories/in-memory/barber-specialty.repository";
-import { InMemoryBarberRepository } from "./infra/repositories/in-memory/barber.repository";
-import { InMemoryCustomerRepository } from "./infra/repositories/in-memory/customer.repository";
-import { InMemorySpecialtyRepository } from "./infra/repositories/in-memory/specialty.repository";
+import { PostgresPrismaAppointmentRepository } from "./infra/repositories/postgres/postgres-prisma-appointment.repository";
+import { PostgresPrismaBarberSpecialtyRepository } from "./infra/repositories/postgres/postgres-prisma-barber-specialty.repository";
+import { PostgresPrismaBarberRepository } from "./infra/repositories/postgres/postgres-prisma-barber.repository";
+import { PostgresPrismaCustomerRepository } from "./infra/repositories/postgres/postgres-prisma-customer.repository";
+import { PostgresPrismaSpecialtyRepository } from "./infra/repositories/postgres/postgres-prisma-specialty.repository";
+import { PrismaClientType } from "./infra/repositories/postgres/prisma/client";
 import { AuthService } from "./infra/services/auth.service";
+import { BarberAvailabilityService } from "./infra/services/barber-availability.service";
 import { BcryptHashService } from "./infra/services/bcrypt-hash.service";
 import {
   ITokenService,
@@ -41,24 +50,36 @@ container.registerInstance<ITokenService>(
 );
 container.registerSingleton<IHashService>("HashService", BcryptHashService);
 container.registerSingleton<IAuthService>("AuthService", AuthService);
+container.registerSingleton<IBarberAvailabilityService>(
+  "BarberAvailabilityService",
+  BarberAvailabilityService
+);
 
 // repos
 container.registerSingleton<ICustomerRepository>(
   "CustomerRepository",
-  InMemoryCustomerRepository
+  PostgresPrismaCustomerRepository
 );
 container.registerSingleton<ISpecialtyRepository>(
   "SpecialtyRepository",
-  InMemorySpecialtyRepository
+  PostgresPrismaSpecialtyRepository
 );
 container.registerSingleton<IBarberRepository>(
   "BarberRepository",
-  InMemoryBarberRepository
+  PostgresPrismaBarberRepository
 );
 container.registerSingleton<IBarberSpecialtyRepository>(
   "BarberSpecialtyRepository",
-  InMemoryBarberSpecialtyRepository
+  PostgresPrismaBarberSpecialtyRepository
 );
+container.registerSingleton<IAppointmentRepository>(
+  "AppointmentRepository",
+  PostgresPrismaAppointmentRepository
+);
+
+// adapters
+const prismaClient = new PrismaClient();
+container.registerInstance<PrismaClientType>("PrismaClient", prismaClient);
 
 // use cases
 container.registerSingleton<GetAllBarbersForBff>(
@@ -76,3 +97,14 @@ container.registerSingleton<GetAllBarberSpecialty>(
   GetAllBarberSpecialty
 );
 container.registerSingleton<GetAllBarbers>("GetAllBarbers", GetAllBarbers);
+container.registerSingleton<FindBarberSlotsByDate>(
+  "FindBarberSlotsByDate",
+  FindBarberSlotsByDate
+);
+container.registerSingleton<CreateAppointment>(
+  "CreateAppointment",
+  CreateAppointment
+);
+
+// middlewares
+container.registerSingleton<AuthMiddleware>("AuthMiddleware", AuthMiddleware);

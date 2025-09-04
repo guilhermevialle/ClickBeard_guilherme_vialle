@@ -6,7 +6,7 @@ import { BarberSpecialty } from "../../domain/entities/barber-specialty";
 import { BarberFactory } from "../../domain/factory/barber.factory";
 import type { IBarberRepository } from "../../infra/interfaces/repositories/barber-repository.interface";
 import type { IBarberSpecialtyRepository } from "../../infra/interfaces/repositories/barber-specialty-repository.interface";
-import type { ISpecialtyRepository } from "../../infra/interfaces/repositories/specialty-repository";
+import type { ISpecialtyRepository } from "../../infra/interfaces/repositories/specialty-repository.interface";
 import { BarberAlreadyExistsError } from "../errors/shared";
 
 export const createBarberWithSpecialtiesSchemaDto = z.object({
@@ -73,8 +73,6 @@ export class CreateBarberWithSpecialties {
     const barberSpecialties = nonNullSpecialtyIds.map((specialtyId) =>
       BarberSpecialty.create({ barberId: barber.id, specialtyId })
     );
-
-    console.log({ barberSpecialties });
 
     await Promise.all(
       barberSpecialties.map((bs) => this.barberSpecialtyRepo.save(bs))

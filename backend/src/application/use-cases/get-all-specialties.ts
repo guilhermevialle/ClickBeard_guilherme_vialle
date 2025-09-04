@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { Specialty } from "../../domain/entities/specialty";
-import type { ISpecialtyRepository } from "../../infra/interfaces/repositories/specialty-repository";
+import type { ISpecialtyRepository } from "../../infra/interfaces/repositories/specialty-repository.interface";
 
 @injectable()
 export class GetAllSpecialties {

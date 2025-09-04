@@ -1,3 +1,4 @@
+### AUTH - Login
 POST http://localhost:8080/auth/login
 Content-Type: application/json
 
@@ -6,31 +7,27 @@ Content-Type: application/json
   "password": "senha123"
 }
 
-
 ###
+
+### AUTH - Register
 POST http://localhost:8080/auth/register
 Content-Type: application/json
 
 {
-  "name":"Guilherme Vialle",
+  "name": "Guilherme Vialle",
   "email": "guivialle@gmail.com",
   "password": "senha123"
 }
 
-
 ###
+
+### SPECIALTIES - Get all
 GET http://localhost:8080/specialties
 Content-Type: application/json
 
 ###
-GET http://localhost:8080/barbers
-Content-Type: application/json
 
-###
-GET http://localhost:8080/barbers/bff
-Content-Type: application/json
-
-###
+### SPECIALTIES - Create new
 POST http://localhost:8080/specialties/new
 Content-Type: application/json
 
@@ -40,6 +37,31 @@ Content-Type: application/json
 }
 
 ###
+
+### BARBERS - Get all
+GET http://localhost:8080/barbers
+Content-Type: application/json
+
+###
+
+### BARBERS - Get by ID
+GET http://localhost:8080/barbers/bff
+Content-Type: application/json
+
+###
+
+### BARBERS - Get slots
+POST http://localhost:8080/barbers/slots
+Content-Type: application/json
+
+{
+  "barberId":"cXxTvaqkVz7BrdPeAbqFO",
+  "date": "2025-09-04T16:17:42.000Z"
+}
+
+###
+
+### BARBERS - Create new
 POST http://localhost:8080/barbers/new
 Content-Type: application/json
 
@@ -53,7 +75,24 @@ Content-Type: application/json
   ]
 }
 
-
 ###
+
+### BARBERS - Get all barber-specialty relations
 GET http://localhost:8080/barber/specialty/all
 Content-Type: application/json
+
+###
+
+### APPOINTMENTS - Create new
+POST http://localhost:8080/appointments/new
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJIcHpnNFdHNE5uVEItc1BWX1J0RzciLCJpYXQiOjE3NTcwMTYzODUsImV4cCI6MTc1NzAxOTk4NX0.gWw8LgAc8a_JzTvBbOXIwfJ8eUlFKomD3VVTI-XO7uM
+
+{
+  "customerId": "c1a2b3d4-e5f6-7890-abcd-1234567890ef",
+  "barberId": "b1c2d3e4-f5a6-7890-abcd-1234567890ab",
+  "specialtyId": "s1a2b3c4-d5e6-7890-abcd-1234567890cd",
+  "startAt": "2025-09-05T10:30:00.000Z"
+}
+
+###

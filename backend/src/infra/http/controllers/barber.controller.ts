@@ -5,9 +5,11 @@ import {
   CreateBarberWithSpecialties,
   createBarberWithSpecialtiesSchemaDto,
 } from "../../../application/use-cases/create-barber-with-specialties";
+import { FindBarberSlotsByDate } from "../../../application/use-cases/find-barber-slots-by-date";
 import { GetAllBarbers } from "../../../application/use-cases/get-all-barbers";
 import { GetAllBarbersForBff } from "../../../application/use-cases/get-all-barbers-for-bff";
 import { IBarberController } from "../../interfaces/controllers/barber-controller.interface";
+import { getBarberSlotsByDateSchemaDto } from "./dtos/barber.dto";
 
 @injectable()
 export class BarberController implements IBarberController {
@@ -16,8 +18,29 @@ export class BarberController implements IBarberController {
     private readonly createBarberWithSpecialties: CreateBarberWithSpecialties,
     @inject("GetAllBarbers") private readonly getAllBarbers: GetAllBarbers,
     @inject("GetAllBarbersForBff")
-    private readonly getAllBarbersForBff: GetAllBarbersForBff
+    private readonly getAllBarbersForBff: GetAllBarbersForBff,
+    @inject("FindBarberSlotsByDate")
+    private readonly findBarberSlotsByDate: FindBarberSlotsByDate
   ) {}
+
+  async getBarberSlotsByDate(
+    request: FastifyRequest,
+    reply: FastifyReply
+  ): Promise<void> {
+    const body = request.body;
+    const result = getBarberSlotsByDateSchemaDto.safeParse(body);
+
+    if (!result.success) throw new BadRequestError(result.error.message);
+
+    const { barberId, date } = result.data;
+
+    const slots = await this.findBarberSlotsByDate.execute({
+      barberId,
+      date,
+    });
+
+    return reply.status(200).send(slots);
+  }
 
   async getAllForBff(
     request: FastifyRequest,

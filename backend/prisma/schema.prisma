@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id           String        @id
+  name         String
+  email        String        @unique
+  password     String
+  appointments Appointment[]
+}
+
+model Barber {
+  id           String            @id
+  name         String            @unique
+  age          Int
+  hiredAt      DateTime
+  workdays     BarberWorkday[]
+  appointments Appointment[]
+  specialties  BarberSpecialty[]
+}
+
+model BarberWorkday {
+  id       String               @id
+  barber   Barber               @relation(fields: [barberId], references: [id])
+  barberId String
+  weekday  Int
+  shifts   BarberWorkdayShift[]
+}
+
+model BarberWorkdayShift {
+  id               String        @id
+  barberWorkday    BarberWorkday @relation(fields: [barberWorkdayId], references: [id])
+  barberWorkdayId  String
+  startAtInMinutes Int
+  endAtInMinutes   Int
+}
+
+model Specialty {
+  id                String            @id
+  name              String            @unique
+  durationInMinutes Int
+  appointments      Appointment[]
+  barbers           BarberSpecialty[]
+}
+
+model Appointment {
+  id                String    @id
+  customer          Customer  @relation(fields: [customerId], references: [id])
+  customerId        String
+  barber            Barber    @relation(fields: [barberId], references: [id])
+  barberId          String
+  specialty         Specialty @relation(fields: [specialtyId], references: [id])
+  specialtyId       String
+  startAt           DateTime
+  durationInMinutes Int
+  createdAt         DateTime
+  updatedAt         DateTime
+}
+
+model BarberSpecialty {
+  id          String    @id
+  barber      Barber    @relation(fields: [barberId], references: [id])
+  barberId    String
+  specialty   Specialty @relation(fields: [specialtyId], references: [id])
+  specialtyId String
+
+  @@unique([barberId, specialtyId])
+}

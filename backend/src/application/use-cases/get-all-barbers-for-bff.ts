@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import type { IBarberRepository } from "../../infra/interfaces/repositories/barber-repository.interface";
 import type { IBarberSpecialtyRepository } from "../../infra/interfaces/repositories/barber-specialty-repository.interface";
-import type { ISpecialtyRepository } from "../../infra/interfaces/repositories/specialty-repository";
+import type { ISpecialtyRepository } from "../../infra/interfaces/repositories/specialty-repository.interface";
 
 interface GetAllBarbersForBffResponseDto {
   id: string;

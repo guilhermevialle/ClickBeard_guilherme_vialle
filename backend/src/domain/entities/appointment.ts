@@ -68,6 +68,21 @@ export class Appointment {
 
     return areIntervalsOverlapping(otherRange, thisRange, { inclusive });
   }
+
+  public toJSON() {
+    return {
+      id: this.id,
+      customerId: this.customerId,
+      barberId: this.barberId,
+      specialtyId: this.specialtyId,
+      durationInMinutes: this.durationInMinutes,
+      startAt: this.startAt,
+      endAt: this.endAt,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+    };
+  }
+
   // getters
   get id() {
     return this.props.id;
@@ -87,10 +102,16 @@ export class Appointment {
   get startAt() {
     return this.props.startAt;
   }
+  get endAt() {
+    return addMinutes(this.startAt, this.durationInMinutes);
+  }
   get createdAt() {
     return this.props.createdAt;
   }
   get updatedAt() {
     return this.props.updatedAt;
+  }
+  get wasFinished() {
+    return this.endAt < new Date();
   }
 }

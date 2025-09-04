@@ -3,7 +3,7 @@ import {
   RegisterBarberDto,
   RegisterCustomerDto,
   UserSession,
-} from "../../dtos/auth.dto";
+} from "../../http/dtos/auth.dto";
 
 export interface IAuthService {
   authenticateCustomer(data: AuthenticateCustomerDto): Promise<UserSession>;
