@@ -1,0 +1,18 @@
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "guivialle@gmail.com",
+  "password": "senha123"
+}
+
+
+###
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "name":"Guilherme Vialle",
+  "email": "guivialle@gmail.com",
+  "password": "senha123"
+}

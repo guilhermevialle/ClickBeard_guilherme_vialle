@@ -30,3 +30,13 @@ export class InvalidCredentialsError extends ApplicationError {
     });
   }
 }
+
+export class BadRequestError extends ApplicationError {
+  constructor(message?: string) {
+    super({
+      message: message ?? APPLICATION_ERROR.BAD_REQUEST.message,
+      errorCode: APPLICATION_ERROR.BAD_REQUEST.errorCode,
+      statusCode: APPLICATION_ERROR.BAD_REQUEST.statusCode,
+    });
+  }
+}

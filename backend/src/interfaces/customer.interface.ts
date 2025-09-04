@@ -6,8 +6,10 @@ export const createCustomerSchema = z.object({
   name: z
     .string("Name must be a string")
     .min(1, "Name must have at least 1 character"),
-  email: z.email("Email must be a valid email"),
-  password: z.string("Password must be a string"),
+  email: z.email("Email must be a valid email").min(1, "Email is required"),
+  password: z
+    .string("Password must be a string")
+    .min(1, "Password is required"),
 });
 
 // aqui poderiamos adicionar createdAt e updatedAt por exemplo

@@ -14,4 +14,9 @@ export const APPLICATION_ERROR = {
     errorCode: "INVALID_CREDENTIALS",
     statusCode: 401,
   },
+  BAD_REQUEST: {
+    message: "Bad request",
+    errorCode: "BAD_REQUEST",
+    statusCode: 400,
+  },
 } as const;

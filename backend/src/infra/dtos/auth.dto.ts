@@ -9,7 +9,7 @@ export interface RegisterDto {
   password: string;
 }
 
-export interface CustomerSession {
+export interface UserSession {
   user: {
     id: string;
     name: string;
