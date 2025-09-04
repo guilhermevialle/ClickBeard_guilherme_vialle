@@ -28,7 +28,7 @@ export default function Slogan({ ...rest }: SloganProps) {
         to="/register"
         className="mt-3 cursor-pointer text-blue-400 underline-offset-4 hover:underline"
       >
-        Abra sua conta
+        Criar uma conta
       </Link>
     </PageLayout>
   );

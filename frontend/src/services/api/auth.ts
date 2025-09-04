@@ -18,7 +18,7 @@ export async function authenticate({
     return data;
   } catch (error: unknown) {
     // @ts-expect-error no types
-    throw error.response?.data || new Error("Erro desconhecido");
+    throw error.response?.data || new Error("Unknown error");
   }
 }
 
@@ -42,6 +42,31 @@ export async function register({
     return data;
   } catch (error: unknown) {
     // @ts-expect-error no types
-    throw error.response?.data || new Error("Erro desconhecido");
+    throw error.response?.data || new Error("Unknown error");
+  }
+}
+
+interface RevalidateTokenResponse {
+  accessToken: string;
+  refreshToken?: string;
+  expiresIn?: number;
+}
+
+export async function revalidateToken(): Promise<RevalidateTokenResponse> {
+  try {
+    const { data } = await API.post<RevalidateTokenResponse>(
+      "/auth/refresh",
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    return data;
+  } catch (error: unknown) {
+    // @ts-expect-error no types
+    throw error.response?.data || new Error("Failed to revalidate token");
   }
 }

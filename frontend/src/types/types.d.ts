@@ -5,8 +5,7 @@ interface UserSession {
     email: string;
   };
   session: {
-    token: string;
-    refreshToken: string;
+    accessToken: string;
   };
 }
 
@@ -14,3 +13,19 @@ interface ErrorResponse {
   message: string;
   errorCode: string;
 }
+
+interface Specialty {
+  id: string;
+  name: string;
+  durationInMinutes: number;
+}
+
+type Barber = {
+  id: string;
+  name: string;
+  hiredAt: Date;
+  specialties: {
+    id: string;
+    name: string;
+  }[];
+};

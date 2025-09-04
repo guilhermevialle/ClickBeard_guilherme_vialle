@@ -24,6 +24,21 @@ const MENU_ITEMS = [
   },
 ];
 
+const NAVBAR_LINKS = [
+  {
+    label: "Admin panel",
+    to: "/admin",
+  },
+  {
+    label: "Cadastrar barbeiro",
+    to: "/barber/new",
+  },
+  {
+    label: "Cadastrar especialidade",
+    to: "/specialty/new",
+  },
+];
+
 export default function Navbar({ className, ...rest }: NavbarProps) {
   const { session, clearSession } = useUserSession();
 
@@ -42,11 +57,21 @@ export default function Navbar({ className, ...rest }: NavbarProps) {
           </span>
         </Link>
       </div>
-      <div>
+      <div className="flex items-center gap-3">
+        {NAVBAR_LINKS.map(({ label, to }) => (
+          <Link
+            key={label}
+            to={to}
+            className="flex h-9 cursor-pointer items-center justify-center text-neutral-400 transition-all hover:text-neutral-300"
+          >
+            {label}
+            <LucideChevronRight className="ml-1 size-[18px]" />
+          </Link>
+        ))}
         {session && session.user ? (
           <div className="flex items-center justify-center gap-3">
             <DialogTrigger>
-              <Button className="size-10 cursor-pointer rounded-full bg-blue-500 text-[20px] font-medium text-white transition-all hover:bg-blue-600">
+              <Button className="flex size-10 cursor-pointer items-center justify-center rounded-full bg-blue-500 text-xl font-medium text-white uppercase transition-all hover:bg-blue-600">
                 {session.user.name[0]}
               </Button>
               <Dialog>
@@ -81,10 +106,9 @@ export default function Navbar({ className, ...rest }: NavbarProps) {
         ) : (
           <Link
             to={"/login"}
-            className="flex h-9 cursor-pointer items-center justify-center gap-1 rounded-full border border-white/5 bg-blue-800/15 pr-4 pl-6 font-medium tracking-tight text-blue-200 hover:opacity-85"
+            className="flex h-9 cursor-pointer items-center justify-center gap-1 rounded-full border border-white/5 bg-blue-800/15 px-4 font-medium tracking-tight text-blue-200 transition-all hover:opacity-85"
           >
-            Fazer login
-            <LucideChevronRight className="ml-2 size-[18px]" />
+            Entrar
           </Link>
         )}
       </div>
