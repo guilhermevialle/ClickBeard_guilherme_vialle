@@ -1,0 +1,93 @@
+import {
+  LucideArrowRight,
+  LucideCalendar,
+  LucideLogOut,
+  LucideUser,
+} from "lucide-react";
+import { Button, Dialog, DialogTrigger, Popover } from "react-aria-components";
+import { Link } from "react-router";
+import { twMerge } from "tailwind-merge";
+import { useUserSession } from "../hooks/use-user-session";
+
+type NavbarProps = React.HTMLAttributes<HTMLDivElement>;
+
+const MENU_ITEMS = [
+  {
+    label: "Agendamentos",
+    to: "/me/appointments",
+    icon: LucideCalendar,
+  },
+  {
+    label: "Perfil",
+    to: "/me/profile",
+    icon: LucideUser,
+  },
+];
+
+export default function Navbar({ className, ...rest }: NavbarProps) {
+  const { session, clearSession } = useUserSession();
+
+  return (
+    <nav
+      {...rest}
+      className={twMerge(
+        "absolute top-0 left-0 z-20 flex h-16 w-full items-center justify-between border-b border-white/5 px-8",
+        className,
+      )}
+    >
+      <div>
+        <Link to={"/"}>
+          <span className="text-xl font-bold tracking-tight text-neutral-200">
+            ClickBeard
+          </span>
+        </Link>
+      </div>
+      <div>
+        {session ? (
+          <div className="flex items-center justify-center gap-3">
+            <DialogTrigger>
+              <Button className="size-10 cursor-pointer rounded-full bg-blue-500 text-[20px] font-medium text-white transition-all hover:bg-blue-600">
+                {session.user.name[0]}
+              </Button>
+              <Dialog>
+                <Popover
+                  className={
+                    "flex h-fit w-72 flex-col rounded-xl border border-white/5 bg-[#0d0d0d] py-2"
+                  }
+                >
+                  {MENU_ITEMS.map(({ icon: Icon, label, to }, index) => {
+                    return (
+                      <Link
+                        to={to}
+                        key={label + index}
+                        className="flex w-full cursor-pointer items-center gap-4 px-4 py-2 text-left font-medium tracking-tight text-neutral-300 transition-all hover:bg-[#2d2d2d]"
+                      >
+                        <Icon className="size-[18px]" />
+                        {label}
+                      </Link>
+                    );
+                  })}
+                  <button
+                    onClick={clearSession}
+                    className="flex w-full cursor-pointer items-center gap-4 px-4 py-2 text-left font-medium tracking-tight text-neutral-300 transition-all hover:bg-[#2d2d2d]"
+                  >
+                    <LucideLogOut className="size-[18px]" />
+                    Sair
+                  </button>
+                </Popover>
+              </Dialog>
+            </DialogTrigger>
+          </div>
+        ) : (
+          <Link
+            to={"/login"}
+            className="flex h-9 cursor-pointer items-center justify-center gap-1 rounded-full bg-white pr-4 pl-6 font-medium tracking-tight hover:opacity-85"
+          >
+            Entrar
+            <LucideArrowRight className="ml-2 size-[18px]" />
+          </Link>
+        )}
+      </div>
+    </nav>
+  );
+}
