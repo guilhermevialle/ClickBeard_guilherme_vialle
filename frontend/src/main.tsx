@@ -5,18 +5,21 @@ import App from "./App.tsx";
 import LoginPage from "./features/pages/login-page.tsx";
 import RegisterPage from "./features/pages/register-page.tsx";
 import SchedulePage from "./features/pages/schedule-page.tsx";
+import QueryProvider from "./features/query-provider.tsx";
 import "./index.css";
 import "./lib/fonts/manrope.ts";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/schedule" element={<SchedulePage />} />
-      </Routes>
-    </BrowserRouter>
+    <QueryProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/schedule" element={<SchedulePage />} />
+        </Routes>
+      </BrowserRouter>
+    </QueryProvider>
   </StrictMode>,
 );

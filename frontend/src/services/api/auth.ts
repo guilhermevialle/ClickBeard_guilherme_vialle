@@ -8,20 +8,17 @@ interface AuthenticateProps {
 export async function authenticate({
   email,
   password,
-}: AuthenticateProps): Promise<UserSession | ErrorResponse> {
+}: AuthenticateProps): Promise<UserSession> {
   try {
-    const { data } = await API.post(
+    const { data } = await API.post<UserSession>(
       "/auth/login",
       { email, password },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
+      { headers: { "Content-Type": "application/json" } },
     );
-    return data as UserSession;
+    return data;
   } catch (error: unknown) {
-    return error as ErrorResponse;
+    // @ts-expect-error no types
+    throw error.response?.data || new Error("Erro desconhecido");
   }
 }
 
@@ -31,15 +28,20 @@ interface RegisterProps {
   password: string;
 }
 
-export async function register({ email, name, password }: RegisterProps) {
+export async function register({
+  email,
+  name,
+  password,
+}: RegisterProps): Promise<UserSession> {
   try {
-    const { data } = await API.post("/auth/register", {
-      email,
-      name,
-      password,
-    });
-    return data as UserSession;
+    const { data } = await API.post<UserSession>(
+      "/auth/register",
+      { email, name, password },
+      { headers: { "Content-Type": "application/json" } },
+    );
+    return data;
   } catch (error: unknown) {
-    return error as ErrorResponse;
+    // @ts-expect-error no types
+    throw error.response?.data || new Error("Erro desconhecido");
   }
 }

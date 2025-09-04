@@ -11,6 +11,6 @@ interface UserSession {
 }
 
 interface ErrorResponse {
-  error: string;
   message: string;
+  errorCode: string;
 }

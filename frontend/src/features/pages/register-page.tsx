@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import {
   LucideEye,
   LucideEyeOff,
@@ -15,7 +16,6 @@ import { useUserSession } from "../../hooks/use-user-session";
 import PageLayout from "../../lib/components/page-layout";
 import { register as registerUser } from "../../services/api/auth";
 
-// Schema de validação
 const registerSchema = z
   .object({
     name: z.string().min(3, "O nome deve ter no mínimo 3 caracteres"),
@@ -34,34 +34,30 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const { session, saveSession } = useUserSession();
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<RegisterFormInputs>({
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async ({ email, name, password }: RegisterFormInputs) => {
-    const response = await registerUser({
-      email,
-      name,
-      password,
-    });
-    const hasError = "error" in response;
-
-    if (!hasError) {
-      saveSession(response);
+  const mutation = useMutation({
+    mutationFn: ({ name, email, password }: RegisterFormInputs) =>
+      registerUser({ name, email, password }),
+    onSuccess: (data) => {
+      saveSession(data);
       navigate("/schedule");
-    }
-  };
+    },
+  });
+
+  const onSubmit = (data: RegisterFormInputs) => mutation.mutate(data);
 
   useEffect(() => {
-    if (session) {
-      navigate("/schedule");
-    }
-  }, [session]);
+    if (session) navigate("/schedule");
+  }, [session, navigate]);
 
   return (
     <main className="h-screen w-full bg-[#0d0d0d]">
@@ -84,9 +80,10 @@ export default function RegisterPage() {
             Preencha os dados abaixo para se cadastrar.
           </p>
 
+          {/* Name field */}
           <div className="mt-8">
             <div className="flex items-center gap-2">
-              <LucideUser className="size-4 font-semibold tracking-wider text-neutral-500 uppercase" />
+              <LucideUser className="size-4 text-neutral-500" />
               <label
                 htmlFor="name"
                 className="text-[13px] font-semibold tracking-wider text-neutral-500 uppercase"
@@ -96,9 +93,10 @@ export default function RegisterPage() {
             </div>
             <div className="mt-1.5 flex h-11 w-full rounded-md bg-[#0d0d0d]">
               <input
+                id="name"
                 type="text"
                 {...register("name")}
-                className="h-full grow px-3 font-medium tracking-tight text-neutral-200 placeholder:font-medium placeholder:tracking-tight placeholder:text-neutral-700"
+                className="h-full w-full rounded-md bg-transparent px-3 font-medium tracking-tight text-neutral-200 placeholder:font-medium placeholder:tracking-tight placeholder:text-neutral-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 placeholder="Digite seu nome completo"
               />
             </div>
@@ -107,9 +105,10 @@ export default function RegisterPage() {
             </p>
           </div>
 
+          {/* Email field */}
           <div className="mt-3">
             <div className="flex items-center gap-2">
-              <LucideMail className="size-4 font-semibold tracking-wider text-neutral-500 uppercase" />
+              <LucideMail className="size-4 text-neutral-500" />
               <label
                 htmlFor="email"
                 className="text-[13px] font-semibold tracking-wider text-neutral-500 uppercase"
@@ -119,9 +118,10 @@ export default function RegisterPage() {
             </div>
             <div className="mt-1.5 flex h-11 w-full rounded-md bg-[#0d0d0d]">
               <input
-                type="text"
+                id="email"
+                type="email"
                 {...register("email")}
-                className="h-full grow px-3 font-medium tracking-tight text-neutral-200 placeholder:font-medium placeholder:tracking-tight placeholder:text-neutral-700"
+                className="h-full w-full rounded-md bg-transparent px-3 font-medium tracking-tight text-neutral-200 placeholder:font-medium placeholder:tracking-tight placeholder:text-neutral-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 placeholder="Digite seu e-mail"
               />
             </div>
@@ -130,9 +130,10 @@ export default function RegisterPage() {
             </p>
           </div>
 
+          {/* Password field */}
           <div className="mt-3">
             <div className="flex items-center gap-2">
-              <LucideLock className="size-4 font-semibold tracking-wider text-neutral-500 uppercase" />
+              <LucideLock className="size-4 text-neutral-500" />
               <label
                 htmlFor="password"
                 className="text-[13px] font-semibold tracking-wider text-neutral-500 uppercase"
@@ -140,22 +141,23 @@ export default function RegisterPage() {
                 Senha
               </label>
             </div>
-            <div className="mt-1.5 flex h-11 w-full gap-3 rounded-md bg-[#0d0d0d]">
+            <div className="mt-1.5 flex h-11 w-full items-center gap-3 rounded-md bg-[#0d0d0d] px-3">
               <input
+                id="password"
                 type={showPassword ? "text" : "password"}
                 {...register("password")}
-                className="h-full grow px-3 font-medium tracking-tight text-neutral-200 placeholder:font-medium placeholder:tracking-tight placeholder:text-neutral-700"
+                className="h-full flex-1 bg-transparent font-medium tracking-tight text-neutral-200 placeholder:font-medium placeholder:tracking-tight placeholder:text-neutral-700 focus:outline-none"
                 placeholder="Digite sua senha"
               />
               <button
                 type="button"
-                className="w-6"
+                className="flex items-center justify-center"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
-                  <LucideEyeOff className="size-4 font-semibold tracking-wider text-neutral-500 uppercase" />
+                  <LucideEyeOff className="size-4 text-neutral-500" />
                 ) : (
-                  <LucideEye className="size-4 font-semibold tracking-wider text-neutral-500 uppercase" />
+                  <LucideEye className="size-4 text-neutral-500" />
                 )}
               </button>
             </div>
@@ -164,9 +166,10 @@ export default function RegisterPage() {
             </p>
           </div>
 
+          {/* Confirm Password field */}
           <div className="mt-3">
             <div className="flex items-center gap-2">
-              <LucideLock className="size-4 font-semibold tracking-wider text-neutral-500 uppercase" />
+              <LucideLock className="size-4 text-neutral-500" />
               <label
                 htmlFor="confirmPassword"
                 className="text-[13px] font-semibold tracking-wider text-neutral-500 uppercase"
@@ -174,22 +177,23 @@ export default function RegisterPage() {
                 Confirmar senha
               </label>
             </div>
-            <div className="mt-1.5 flex h-11 w-full gap-3 rounded-md bg-[#0d0d0d]">
+            <div className="mt-1.5 flex h-11 w-full items-center gap-3 rounded-md bg-[#0d0d0d] px-3">
               <input
-                type={showPassword ? "text" : "password"}
+                id="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
                 {...register("confirmPassword")}
-                className="h-full grow px-3 font-medium tracking-tight text-neutral-200 placeholder:font-medium placeholder:tracking-tight placeholder:text-neutral-700"
+                className="h-full flex-1 bg-transparent font-medium tracking-tight text-neutral-200 placeholder:font-medium placeholder:tracking-tight placeholder:text-neutral-700 focus:outline-none"
                 placeholder="Confirme sua senha"
               />
               <button
                 type="button"
-                className="w-6"
-                onClick={() => setShowPassword(!showPassword)}
+                className="flex items-center justify-center"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
-                {showPassword ? (
-                  <LucideEyeOff className="size-4 font-semibold tracking-wider text-neutral-500 uppercase" />
+                {showConfirmPassword ? (
+                  <LucideEyeOff className="size-4 text-neutral-500" />
                 ) : (
-                  <LucideEye className="size-4 font-semibold tracking-wider text-neutral-500 uppercase" />
+                  <LucideEye className="size-4 text-neutral-500" />
                 )}
               </button>
             </div>
@@ -198,24 +202,33 @@ export default function RegisterPage() {
             </p>
           </div>
 
+          <div className="mt-2 h-6">
+            {mutation.isError && (
+              <p className="text-xs text-red-500">
+                {(mutation.error as Error)?.message ||
+                  "Ocorreu um erro no cadastro"}
+              </p>
+            )}
+          </div>
+
           <button
             type="submit"
-            disabled={isSubmitting}
-            className="mt-5 h-12 w-full cursor-pointer rounded-full bg-white font-medium tracking-tight text-black transition-all hover:opacity-85 active:scale-[0.98]"
+            disabled={mutation.isPending}
+            className="mt-5 h-12 w-full cursor-pointer rounded-full bg-white font-medium tracking-tight text-black transition-all hover:opacity-85 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Criar conta
+            {mutation.isPending ? "Criando conta..." : "Criar conta"}
           </button>
 
           <p className="mt-6 text-center">
             <span className="text-sm font-medium tracking-tight text-neutral-500">
               Já possui uma conta?
             </span>{" "}
-            <a
-              href="/login"
+            <Link
+              to="/login"
               className="text-sm font-medium tracking-tight text-blue-400 underline-offset-4 hover:underline"
             >
               Faça login
-            </a>
+            </Link>
           </p>
         </form>
       </PageLayout>

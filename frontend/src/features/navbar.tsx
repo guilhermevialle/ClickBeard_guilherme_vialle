@@ -1,6 +1,6 @@
 import {
-  LucideArrowRight,
   LucideCalendar,
+  LucideChevronRight,
   LucideLogOut,
   LucideUser,
 } from "lucide-react";
@@ -37,13 +37,13 @@ export default function Navbar({ className, ...rest }: NavbarProps) {
     >
       <div>
         <Link to={"/"}>
-          <span className="text-xl font-bold tracking-tight text-neutral-200">
+          <span className="text-xl font-bold tracking-tight text-neutral-300">
             ClickBeard
           </span>
         </Link>
       </div>
       <div>
-        {session ? (
+        {session && session.user ? (
           <div className="flex items-center justify-center gap-3">
             <DialogTrigger>
               <Button className="size-10 cursor-pointer rounded-full bg-blue-500 text-[20px] font-medium text-white transition-all hover:bg-blue-600">
@@ -81,10 +81,10 @@ export default function Navbar({ className, ...rest }: NavbarProps) {
         ) : (
           <Link
             to={"/login"}
-            className="flex h-9 cursor-pointer items-center justify-center gap-1 rounded-full bg-white pr-4 pl-6 font-medium tracking-tight hover:opacity-85"
+            className="flex h-9 cursor-pointer items-center justify-center gap-1 rounded-full border border-white/5 bg-blue-800/20 pr-4 pl-6 font-medium tracking-tight text-blue-300 hover:opacity-85"
           >
-            Entrar
-            <LucideArrowRight className="ml-2 size-[18px]" />
+            Fazer login
+            <LucideChevronRight className="ml-2 size-[18px]" />
           </Link>
         )}
       </div>
