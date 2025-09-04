@@ -10,7 +10,9 @@ describe("BarberFactory", () => {
   });
 
   it("should create a barber with 7 full-day workdays", () => {
-    const barber = BarberFactory.createWithWorkdaysAndShifts("barber-2");
+    const barber = BarberFactory.createWithWorkdaysAndShifts({
+      barberId: "barber-2",
+    });
 
     expect(barber.workdays.length).toBe(7);
     barber.workdays.forEach((wd, i) => {

@@ -2,6 +2,8 @@ import { container } from "tsyringe";
 import { CreateBarberWithSpecialties } from "./application/use-cases/create-barber-with-specialties";
 import { CreateSpecialty } from "./application/use-cases/create-specialty";
 import { GetAllBarberSpecialty } from "./application/use-cases/get-all-barber-specialty";
+import { GetAllBarbers } from "./application/use-cases/get-all-barbers";
+import { GetAllBarbersForBff } from "./application/use-cases/get-all-barbers-for-bff";
 import { GetAllSpecialties } from "./application/use-cases/get-all-specialties";
 import { IBarberRepository } from "./infra/interfaces/repositories/barber-repository.interface";
 import { IBarberSpecialtyRepository } from "./infra/interfaces/repositories/barber-specialty-repository.interface";
@@ -59,6 +61,10 @@ container.registerSingleton<IBarberSpecialtyRepository>(
 );
 
 // use cases
+container.registerSingleton<GetAllBarbersForBff>(
+  "GetAllBarbersForBff",
+  GetAllBarbersForBff
+);
 container.registerSingleton("GetAllSpecialties", GetAllSpecialties);
 container.registerSingleton("CreateSpecialty", CreateSpecialty);
 container.registerSingleton(
@@ -69,3 +75,4 @@ container.registerSingleton<GetAllBarberSpecialty>(
   "GetAllBarberSpecialty",
   GetAllBarberSpecialty
 );
+container.registerSingleton<GetAllBarbers>("GetAllBarbers", GetAllBarbers);

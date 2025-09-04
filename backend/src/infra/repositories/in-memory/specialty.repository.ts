@@ -2,7 +2,16 @@ import { Specialty } from "../../../domain/entities/specialty";
 import { ISpecialtyRepository } from "../../interfaces/repositories/specialty-repository";
 
 export class InMemorySpecialtyRepository implements ISpecialtyRepository {
-  private specialties: Specialty[] = [];
+  private specialties: Specialty[] = [
+    Specialty.create({
+      name: "Haircut",
+      durationInMinutes: 30,
+    }),
+    Specialty.create({
+      name: "Shave",
+      durationInMinutes: 30,
+    }),
+  ];
 
   async save(specialty: Specialty): Promise<void> {
     this.specialties.push(specialty);

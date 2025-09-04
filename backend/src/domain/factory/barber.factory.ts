@@ -1,3 +1,4 @@
+import { generateEntityID } from "../../utils/generate-id";
 import { Barber } from "../aggregates/barber";
 
 export class BarberFactory {
@@ -11,12 +12,22 @@ export class BarberFactory {
     });
   }
 
-  static createWithWorkdaysAndShifts(barberId: string) {
+  static createWithWorkdaysAndShifts({
+    age,
+    barberId,
+    hiredAt,
+    name,
+  }: {
+    barberId?: string;
+    name?: string;
+    age?: number;
+    hiredAt?: Date;
+  }) {
     const barber = Barber.from({
-      id: barberId,
-      name: "John Doe",
-      age: 20,
-      hiredAt: new Date("2000-01-01"),
+      id: barberId ?? generateEntityID(),
+      name: name ?? "John Doe",
+      age: age ?? 20,
+      hiredAt: hiredAt ?? new Date("2000-01-01"),
       workdays: [],
     });
 

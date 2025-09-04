@@ -1,7 +1,9 @@
+import { isBefore } from "date-fns";
 import { inject, injectable } from "tsyringe";
 import z from "zod";
 import { Barber } from "../../domain/aggregates/barber";
 import { BarberSpecialty } from "../../domain/entities/barber-specialty";
+import { BarberFactory } from "../../domain/factory/barber.factory";
 import type { IBarberRepository } from "../../infra/interfaces/repositories/barber-repository.interface";
 import type { IBarberSpecialtyRepository } from "../../infra/interfaces/repositories/barber-specialty-repository.interface";
 import type { ISpecialtyRepository } from "../../infra/interfaces/repositories/specialty-repository";
@@ -13,7 +15,11 @@ export const createBarberWithSpecialtiesSchemaDto = z.object({
     .number("Age must be a number")
     .positive("Age must be greater than 0")
     .int("Age must be an integer"),
-  hiredAt: z.coerce.date("HiredAt must be a valid date"),
+  hiredAt: z.coerce
+    .date("HiredAt must be a valid date")
+    .refine((date) => isBefore(date, new Date()), {
+      message: "HiredAt must be in the past",
+    }),
   specialtyIds: z
     .array(
       z.string("SpecialtyId must be a string"),
@@ -49,7 +55,11 @@ export class CreateBarberWithSpecialties {
         `Barber with name ${barberExits.name} already exists`
       );
 
-    const barber = Barber.create({ age, hiredAt, name });
+    const barber = BarberFactory.createWithWorkdaysAndShifts({
+      age,
+      name,
+      hiredAt,
+    });
     await this.barberRepo.save(barber);
 
     const specialties = await Promise.all(
@@ -63,6 +73,8 @@ export class CreateBarberWithSpecialties {
     const barberSpecialties = nonNullSpecialtyIds.map((specialtyId) =>
       BarberSpecialty.create({ barberId: barber.id, specialtyId })
     );
+
+    console.log({ barberSpecialties });
 
     await Promise.all(
       barberSpecialties.map((bs) => this.barberSpecialtyRepo.save(bs))

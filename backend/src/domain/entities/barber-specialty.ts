@@ -40,6 +40,14 @@ export class BarberSpecialty {
     });
   }
 
+  public toJSON() {
+    return {
+      id: this.id,
+      barberId: this.barberId,
+      specialtyId: this.specialtyId,
+    };
+  }
+
   get id() {
     return this.props.id;
   }

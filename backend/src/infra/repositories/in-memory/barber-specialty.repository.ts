@@ -6,6 +6,12 @@ export class InMemoryBarberSpecialtyRepository
 {
   private storage: BarberSpecialty[] = [];
 
+  async findSpecialtiesByBarberId(
+    barberId: string
+  ): Promise<BarberSpecialty[]> {
+    return this.storage.filter((bs) => bs.barberId === barberId);
+  }
+
   async save(barberSpecialty: BarberSpecialty): Promise<void> {
     this.storage.push(barberSpecialty);
   }

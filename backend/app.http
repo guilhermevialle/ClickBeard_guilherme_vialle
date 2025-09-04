@@ -23,6 +23,14 @@ GET http://localhost:8080/specialties
 Content-Type: application/json
 
 ###
+GET http://localhost:8080/barbers
+Content-Type: application/json
+
+###
+GET http://localhost:8080/barbers/bff
+Content-Type: application/json
+
+###
 POST http://localhost:8080/specialties/new
 Content-Type: application/json
 
@@ -40,7 +48,6 @@ Content-Type: application/json
   "age": 28,
   "hiredAt": "2025-09-04T08:00:00.000Z",
   "specialtyIds": [
-    "specialty-123",
     "specialty-456",
     "specialty-789"
   ]

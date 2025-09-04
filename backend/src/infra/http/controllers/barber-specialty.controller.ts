@@ -12,6 +12,6 @@ export class BarberSpecialtyController implements IBarberSpecialtyController {
 
   async getAll(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     const allBarberSpecialty = await this.getAllBarberSpecialty.execute();
-    return reply.status(200).send(allBarberSpecialty);
+    return reply.status(200).send(allBarberSpecialty.map((bs) => bs.toJSON()));
   }
 }
