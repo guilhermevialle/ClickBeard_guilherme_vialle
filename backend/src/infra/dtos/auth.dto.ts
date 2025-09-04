@@ -16,7 +16,7 @@ export interface UserSession {
     email: string;
   };
   session: {
-    token: string;
+    accessToken: string;
     refreshToken: string;
   };
 }

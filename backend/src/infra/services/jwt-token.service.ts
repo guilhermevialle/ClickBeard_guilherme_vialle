@@ -1,4 +1,5 @@
 import jwt, { SignOptions, VerifyOptions } from "jsonwebtoken";
+import type { StringValue } from "ms";
 
 export interface ITokenService {
   sign(payload: object, options?: SignOptions): string;
@@ -7,10 +8,16 @@ export interface ITokenService {
 }
 
 export class JwtTokenService implements ITokenService {
-  constructor(private readonly secret: string) {}
+  constructor(
+    private readonly secret: string,
+    private readonly expiresIn: number | StringValue
+  ) {}
 
-  sign(payload: object, options?: SignOptions): string {
-    return jwt.sign(payload, this.secret, options);
+  sign(payload: object, options?: Omit<SignOptions, "expiresIn">): string {
+    return jwt.sign(payload, this.secret, {
+      ...options,
+      expiresIn: this.expiresIn,
+    });
   }
 
   verify<T = any>(token: string, options?: VerifyOptions): T | null {

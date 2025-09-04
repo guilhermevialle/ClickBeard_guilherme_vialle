@@ -16,36 +16,30 @@ export class AuthService implements IAuthService {
   constructor(
     @inject("CustomerRepository")
     private readonly customerRepo: ICustomerRepository,
-    @inject("TokenService")
-    private readonly tokenService: ITokenService,
+    @inject("AccessTokenService")
+    private readonly accessTokenService: ITokenService,
+    @inject("RefreshTokenService")
+    private readonly refreshTokenService: ITokenService,
     @inject("HashService")
     private readonly hashService: IHashService
   ) {}
 
   async authenticate({ email, password }: LoginDto): Promise<UserSession> {
     const customer = await this.customerRepo.findByEmail(email);
-
     if (!customer)
-      throw new InvalidCredentialsError(`Invalid email or password.`);
+      throw new InvalidCredentialsError("Invalid email or password.");
 
     const isPasswordValid = await this.hashService.compare(
       password,
       customer.password
     );
-
     if (!isPasswordValid)
-      throw new InvalidCredentialsError(`Invalid email or password.`);
+      throw new InvalidCredentialsError("Invalid email or password.");
 
-    const payload: AuthTokenPayload = {
-      userId: customer.id,
-    };
+    const payload: AuthTokenPayload = { userId: customer.id };
 
-    const token = this.tokenService.sign(payload, {
-      expiresIn: 3600, // 1 hour,
-    });
-    const refreshToken = this.tokenService.sign(payload, {
-      expiresIn: 604800, // 7 days,
-    });
+    const accessToken = this.accessTokenService.sign(payload);
+    const refreshToken = this.refreshTokenService.sign(payload);
 
     return {
       user: {
@@ -54,7 +48,7 @@ export class AuthService implements IAuthService {
         email: customer.email,
       },
       session: {
-        token,
+        accessToken,
         refreshToken,
       },
     };
@@ -62,31 +56,20 @@ export class AuthService implements IAuthService {
 
   async register({ email, password, name }: RegisterDto): Promise<UserSession> {
     const customerExists = await this.customerRepo.findByEmail(email);
-
     if (customerExists)
       throw new UserAlreadyExistsError(
         `User with email ${email} already exists`
       );
 
     const hash = await this.hashService.hash(password);
-    const customer = Customer.create({
-      name,
-      email,
-      password: hash,
-    });
+    const customer = Customer.create({ name, email, password: hash });
 
     await this.customerRepo.save(customer);
 
-    const payload: AuthTokenPayload = {
-      userId: customer.id,
-    };
+    const payload: AuthTokenPayload = { userId: customer.id };
 
-    const token = this.tokenService.sign(payload, {
-      expiresIn: 3600, // 1 hour,
-    });
-    const refreshToken = this.tokenService.sign(payload, {
-      expiresIn: 604800, // 7 days,
-    });
+    const accessToken = this.accessTokenService.sign(payload);
+    const refreshToken = this.refreshTokenService.sign(payload);
 
     return {
       user: {
@@ -95,9 +78,24 @@ export class AuthService implements IAuthService {
         email: customer.email,
       },
       session: {
-        token,
+        accessToken,
         refreshToken,
       },
     };
+  }
+
+  async refresh(refreshToken: string): Promise<string> {
+    try {
+      const payload =
+        this.refreshTokenService.verify<AuthTokenPayload>(refreshToken);
+
+      const newAccessToken = this.accessTokenService.sign({
+        userId: payload?.userId,
+      });
+
+      return newAccessToken;
+    } catch {
+      throw new InvalidCredentialsError("Invalid or expired refresh token.");
+    }
   }
 }

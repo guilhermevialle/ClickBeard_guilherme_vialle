@@ -10,10 +10,22 @@ import {
   JwtTokenService,
 } from "./infra/services/jwt-token.service";
 
-const TOKEN_SECRET = process.env.TOKEN_SECRET ?? "just_for_education_purposes";
+const ACCESS_TOKEN_SECRET =
+  process.env.TOKEN_SECRET ?? "secret_for_education_purposes";
+const REFRESH_TOKEN_SECRET =
+  process.env.TOKEN_SECRET ?? "secret_for_education_purposes";
 
-const tokenService = new JwtTokenService(TOKEN_SECRET);
-container.registerInstance<ITokenService>("TokenService", tokenService);
+const accessTokenService = new JwtTokenService(ACCESS_TOKEN_SECRET, 3600);
+const refreshTokenService = new JwtTokenService(REFRESH_TOKEN_SECRET, 86400);
+
+container.registerInstance<ITokenService>(
+  "AccessTokenService",
+  accessTokenService
+);
+container.registerInstance<ITokenService>(
+  "RefreshTokenService",
+  refreshTokenService
+);
 container.registerSingleton<IHashService>("HashService", BcryptHashService);
 container.registerSingleton<IAuthService>("AuthService", AuthService);
 container.registerSingleton<ICustomerRepository>(

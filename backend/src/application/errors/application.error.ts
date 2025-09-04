@@ -10,6 +10,14 @@ export class ApplicationError extends Error {
     this.name = this.constructor.name;
   }
 
+  public toJSON() {
+    return {
+      message: this.message,
+      errorCode: this.errorCode,
+      statusCode: this.statusCode,
+    };
+  }
+
   // getters
   get message() {
     return this.props.message;
