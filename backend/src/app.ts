@@ -4,7 +4,10 @@ import "reflect-metadata";
 import { ApplicationError } from "./application/errors/application.error";
 import "./container";
 import { DomainError } from "./domain/errors/domain.error";
-import { authRoutes } from "./infra/http/routes/auth";
+import { authRoutes } from "./infra/http/routes/auth.route";
+import { barberSpecialtyRoutes } from "./infra/http/routes/barber-specialty.route";
+import { barberRoutes } from "./infra/http/routes/barber.route";
+import { specialtyRoutes } from "./infra/http/routes/specialty.route";
 
 import fastify = require("fastify");
 
@@ -34,4 +37,7 @@ app.setErrorHandler(
   }
 );
 
+barberRoutes(app);
 authRoutes(app);
+specialtyRoutes(app);
+barberSpecialtyRoutes(app);

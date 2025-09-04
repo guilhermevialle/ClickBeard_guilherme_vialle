@@ -1,4 +1,4 @@
-import { Customer } from "../../domain/entities/customer";
+import { Customer } from "../../../domain/entities/customer";
 
 export interface ICustomerRepository {
   save(customer: Customer): Promise<void>;

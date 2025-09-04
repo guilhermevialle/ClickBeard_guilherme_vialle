@@ -36,12 +36,22 @@ export class Specialty {
     });
   }
 
+  public toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      durationInMinutes: this.durationInMinutes,
+    };
+  }
+
   // getters
   get id() {
     return this.props.id;
   }
-
   get name() {
     return this.props.name;
+  }
+  get durationInMinutes() {
+    return this.props.durationInMinutes;
   }
 }

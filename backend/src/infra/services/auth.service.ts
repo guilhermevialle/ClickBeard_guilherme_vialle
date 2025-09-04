@@ -4,12 +4,17 @@ import {
   UserAlreadyExistsError,
 } from "../../application/errors/shared";
 import { Customer } from "../../domain/entities/customer";
-import { LoginDto, RegisterDto, UserSession } from "../dtos/auth.dto";
+import {
+  AuthenticateCustomerDto,
+  RegisterBarberDto,
+  RegisterCustomerDto,
+  UserSession,
+} from "../dtos/auth.dto";
 import { AuthTokenPayload } from "../dtos/token.dto";
-import type { IAuthService } from "../interfaces/auth-service.interface";
-import type { ICustomerRepository } from "../interfaces/customer-repository.interface";
-import type { IHashService } from "../interfaces/hash-service.interface";
-import type { ITokenService } from "../interfaces/token-service.interface";
+import type { ICustomerRepository } from "../interfaces/repositories/customer-repository.interface";
+import type { IAuthService } from "../interfaces/services/auth-service.interface";
+import type { IHashService } from "../interfaces/services/hash-service.interface";
+import type { ITokenService } from "./jwt-token.service";
 
 @injectable()
 export class AuthService implements IAuthService {
@@ -24,7 +29,10 @@ export class AuthService implements IAuthService {
     private readonly hashService: IHashService
   ) {}
 
-  async authenticate({ email, password }: LoginDto): Promise<UserSession> {
+  async authenticateCustomer({
+    email,
+    password,
+  }: AuthenticateCustomerDto): Promise<UserSession> {
     const customer = await this.customerRepo.findByEmail(email);
     if (!customer)
       throw new InvalidCredentialsError("Invalid email or password.");
@@ -54,7 +62,11 @@ export class AuthService implements IAuthService {
     };
   }
 
-  async register({ email, password, name }: RegisterDto): Promise<UserSession> {
+  async registerCustomer({
+    email,
+    password,
+    name,
+  }: RegisterCustomerDto): Promise<UserSession> {
     const customerExists = await this.customerRepo.findByEmail(email);
     if (customerExists)
       throw new UserAlreadyExistsError(
@@ -84,7 +96,9 @@ export class AuthService implements IAuthService {
     };
   }
 
-  async refresh(refreshToken: string): Promise<string> {
+  async registerBarber(data: RegisterBarberDto): Promise<void> {}
+
+  async refreshToken(refreshToken: string): Promise<string> {
     try {
       const payload =
         this.refreshTokenService.verify<AuthTokenPayload>(refreshToken);

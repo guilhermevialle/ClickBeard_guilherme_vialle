@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { IHashService } from "../interfaces/hash-service.interface";
+import { IHashService } from "../interfaces/services/hash-service.interface";
 
 export class BcryptHashService implements IHashService {
   constructor(private readonly saltRounds: number = 10) {}

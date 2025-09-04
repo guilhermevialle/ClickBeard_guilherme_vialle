@@ -1,9 +1,9 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { inject, injectable } from "tsyringe";
 import { BadRequestError } from "../../../application/errors/shared";
-import type { IAuthController } from "../../interfaces/auth-controller.interface";
-import type { IAuthService } from "../../interfaces/auth-service.interface";
-import { authLoginSchemaDto, authRegisterSchemaDto } from "./dtos/auth";
+import { IAuthController } from "../../interfaces/controllers/auth-controller.interface";
+import type { IAuthService } from "../../interfaces/services/auth-service.interface";
+import { authLoginSchemaDto, authRegisterSchemaDto } from "./dtos/auth.dto";
 
 @injectable()
 export class AuthController implements IAuthController {
@@ -19,7 +19,10 @@ export class AuthController implements IAuthController {
 
     const { email, password } = result.data;
 
-    const session = await this.authService.authenticate({ email, password });
+    const session = await this.authService.authenticateCustomer({
+      email,
+      password,
+    });
 
     return reply.status(200).send(session);
   }
@@ -32,7 +35,11 @@ export class AuthController implements IAuthController {
 
     const { name, email, password } = result.data;
 
-    const session = await this.authService.register({ name, email, password });
+    const session = await this.authService.registerCustomer({
+      name,
+      email,
+      password,
+    });
 
     return reply.status(200).send(session);
   }

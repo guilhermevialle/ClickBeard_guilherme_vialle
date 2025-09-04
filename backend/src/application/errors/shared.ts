@@ -11,6 +11,16 @@ export class UserAlreadyExistsError extends ApplicationError {
   }
 }
 
+export class BarberAlreadyExistsError extends ApplicationError {
+  constructor(message?: string) {
+    super({
+      message: message ?? APPLICATION_ERROR.BARBER_ALREADY_EXISTS.message,
+      errorCode: APPLICATION_ERROR.BARBER_ALREADY_EXISTS.errorCode,
+      statusCode: APPLICATION_ERROR.BARBER_ALREADY_EXISTS.statusCode,
+    });
+  }
+}
+
 export class CustomerNotFoundError extends ApplicationError {
   constructor(message?: string) {
     super({
@@ -37,6 +47,16 @@ export class BadRequestError extends ApplicationError {
       message: message ?? APPLICATION_ERROR.BAD_REQUEST.message,
       errorCode: APPLICATION_ERROR.BAD_REQUEST.errorCode,
       statusCode: APPLICATION_ERROR.BAD_REQUEST.statusCode,
+    });
+  }
+}
+
+export class SpecialtyAlreadyExistsError extends ApplicationError {
+  constructor(message?: string) {
+    super({
+      message: message ?? APPLICATION_ERROR.SPECIALTY_ALREADY_EXISTS.message,
+      errorCode: APPLICATION_ERROR.SPECIALTY_ALREADY_EXISTS.errorCode,
+      statusCode: APPLICATION_ERROR.SPECIALTY_ALREADY_EXISTS.statusCode,
     });
   }
 }

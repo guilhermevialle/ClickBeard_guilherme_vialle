@@ -6,10 +6,10 @@ import {
   UserAlreadyExistsError,
 } from "../../application/errors/shared";
 import { Customer } from "../../domain/entities/customer";
-import type { ICustomerRepository } from "../interfaces/customer-repository.interface";
-import type { IHashService } from "../interfaces/hash-service.interface";
-import type { ITokenService } from "../interfaces/token-service.interface";
+import type { ICustomerRepository } from "../interfaces/repositories/customer-repository.interface";
+import type { IHashService } from "../interfaces/services/hash-service.interface";
 import { AuthService } from "./auth.service";
+import type { ITokenService } from "./jwt-token.service";
 
 describe("AuthService", () => {
   let customerRepo: Mocked<ICustomerRepository>;
@@ -60,7 +60,7 @@ describe("AuthService", () => {
       accessTokenService.sign.mockReturnValue("access-token");
       refreshTokenService.sign.mockReturnValue("refresh-token");
 
-      const result = await service.authenticate({
+      const result = await service.authenticateCustomer({
         email: fakeCustomer.email,
         password: "plain-pass",
       });
@@ -78,7 +78,10 @@ describe("AuthService", () => {
       customerRepo.findByEmail.mockResolvedValue(null);
 
       await expect(
-        service.authenticate({ email: "nope@test.com", password: "123" })
+        service.authenticateCustomer({
+          email: "nope@test.com",
+          password: "123",
+        })
       ).rejects.toThrow(InvalidCredentialsError);
     });
 
@@ -87,7 +90,10 @@ describe("AuthService", () => {
       hashService.compare.mockResolvedValue(false);
 
       await expect(
-        service.authenticate({ email: fakeCustomer.email, password: "wrong" })
+        service.authenticateCustomer({
+          email: fakeCustomer.email,
+          password: "wrong",
+        })
       ).rejects.toThrow(InvalidCredentialsError);
     });
   });
@@ -100,7 +106,7 @@ describe("AuthService", () => {
       refreshTokenService.sign.mockReturnValue("refresh-token");
       customerRepo.save.mockResolvedValue();
 
-      const result = await service.register({
+      const result = await service.registerCustomer({
         email: "new@test.com",
         password: "123456",
         name: "Alice",
@@ -115,7 +121,7 @@ describe("AuthService", () => {
       customerRepo.findByEmail.mockResolvedValue(fakeCustomer);
 
       await expect(
-        service.register({
+        service.registerCustomer({
           email: fakeCustomer.email,
           password: "123456",
           name: "Alice",
@@ -129,7 +135,7 @@ describe("AuthService", () => {
       refreshTokenService.verify.mockReturnValue({ userId: fakeCustomer.id });
       accessTokenService.sign.mockReturnValue("new-access-token");
 
-      const token = await service.refresh("valid-refresh");
+      const token = await service.refreshToken("valid-refresh");
 
       expect(token).toBe("new-access-token");
     });
@@ -139,7 +145,7 @@ describe("AuthService", () => {
         throw new Error("invalid");
       });
 
-      await expect(service.refresh("bad-token")).rejects.toThrow(
+      await expect(service.refreshToken("bad-token")).rejects.toThrow(
         InvalidCredentialsError
       );
     });
