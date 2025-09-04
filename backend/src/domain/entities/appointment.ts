@@ -1,3 +1,4 @@
+import { addMinutes, areIntervalsOverlapping } from "date-fns";
 import {
   AppointmentProps,
   appointmentSchema,
@@ -50,6 +51,23 @@ export class Appointment {
     });
   }
 
+  // public methods
+  public isOverlapping(
+    range: { startAt: Date; endAt: Date },
+    inclusive: boolean = false
+  ): boolean {
+    const thisRange = {
+      start: this.startAt,
+      end: addMinutes(this.startAt, this.durationInMinutes),
+    };
+
+    const otherRange = {
+      start: range.startAt,
+      end: range.endAt,
+    };
+
+    return areIntervalsOverlapping(otherRange, thisRange, { inclusive });
+  }
   // getters
   get id() {
     return this.props.id;
