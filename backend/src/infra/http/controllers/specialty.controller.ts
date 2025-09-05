@@ -27,7 +27,7 @@ export class SpecialtyController implements ISpecialtyController {
       durationInMinutes,
     });
 
-    return reply.status(201).send(specialty);
+    return reply.status(201).send(specialty.toJSON());
   }
 
   async getAll(request: FastifyRequest, reply: FastifyReply): Promise<void> {

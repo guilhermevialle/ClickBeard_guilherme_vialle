@@ -15,7 +15,7 @@ export class AuthMiddleware {
       return reply.status(401).send({
         message: "Authorization header missing",
         statusCode: 401,
-        errorCode: "AUTHORIZATION_HEADER_MISSING",
+        errorCode: "UNAUTHORIZED",
       });
 
     const [scheme, token] = header.split(" ");
@@ -24,7 +24,7 @@ export class AuthMiddleware {
       return reply.status(401).send({
         message: "Malformed token",
         statusCode: 401,
-        errorCode: "MALFORMED_TOKEN",
+        errorCode: "UNAUTHORIZED",
       });
     }
 
@@ -33,7 +33,7 @@ export class AuthMiddleware {
       return reply.status(401).send({
         message: "Invalid or expired token",
         statusCode: 401,
-        errorCode: "INVALID_OR_EXPIRED_TOKEN",
+        errorCode: "UNAUTHORIZED",
       });
     }
 
