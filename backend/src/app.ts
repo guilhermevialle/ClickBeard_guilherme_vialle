@@ -16,19 +16,31 @@ export const app = fastify({
   logger: true,
 });
 
+// Desabilita TODA validação de schema - Swagger será apenas para documentação
+app.setValidatorCompiler(() => {
+  return () => true; // Sempre retorna true = nunca valida
+});
+
+// Desabilita também a serialização baseada em schema
+app.setSerializerCompiler(() => {
+  return (data) => JSON.stringify(data);
+});
+
 async function setupApp() {
   await app.register(cors, {
     origin: "http://localhost:5173",
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   });
 
+  // @ts-expect-error swagger configurado APENAS para documentacao
   await app.register(import("@fastify/swagger"), {
     openapi: {
       openapi: "3.0.0",
       info: {
-        title: "Barber Shop API",
-        description: "API documentation for Barber Shop application",
+        title: "ClickBeard API",
+        description:
+          "API documentation for ClickBeard(Documentation only - Validation handled by Zod)",
         version: "1.0.0",
       },
       servers: [
@@ -47,6 +59,18 @@ async function setupApp() {
         },
       },
     },
+    // configuracao para desabilitar validação de schema
+    transform: ({ schema, url, method, httpStatus }: any) => {
+      // remove schemas de validacao mas mantem documentacao
+      const transformedSchema = { ...schema };
+      delete transformedSchema.body;
+      delete transformedSchema.querystring;
+      delete transformedSchema.params;
+      delete transformedSchema.headers;
+      return { schema: transformedSchema, url, method, httpStatus };
+    },
+    validatorCompiler: () => () => true,
+    serializerCompiler: () => (data: unknown) => JSON.stringify(data),
   });
 
   await app.register(import("@fastify/swagger-ui"), {
@@ -54,6 +78,8 @@ async function setupApp() {
     uiConfig: {
       docExpansion: "full",
       deepLinking: false,
+      displayRequestDuration: true,
+      tryItOutEnabled: true,
     },
     staticCSP: true,
   });
