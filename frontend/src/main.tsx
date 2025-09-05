@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import App from "./App.tsx";
+import AppointmentsPage from "./features/pages/appointments-page.tsx";
 import CreateBarberPage from "./features/pages/create-barber-page.tsx";
 import CreateSpecialtyPage from "./features/pages/create-specialty-page.tsx";
 import LoginPage from "./features/pages/login-page.tsx";
@@ -22,6 +23,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/barber/new" element={<CreateBarberPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/schedule" element={<SchedulePage />} />
+          <Route path="/me/appointments" element={<AppointmentsPage />} />
         </Routes>
       </BrowserRouter>
     </QueryProvider>

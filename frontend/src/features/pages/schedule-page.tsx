@@ -57,7 +57,6 @@ export default function SchedulePage() {
                     <div>
                       <p className="font-medium tracking-tight text-neutral-300">
                         {WEEK_DAYS[index]}
-
                         {index === todayWeekday && (
                           <span className="ml-2 rounded-full bg-blue-800/20 px-3 py-1 text-sm font-semibold tracking-tight text-blue-400">
                             Hoje

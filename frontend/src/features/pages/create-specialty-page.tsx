@@ -2,10 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { LucideClock, LucideMoveLeft, LucideStethoscope } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import * as z from "zod";
 import PageLayout from "../../lib/components/page-layout";
 import { createSpecialty } from "../../services/api/specialty";
+import Navbar from "../navbar";
 
 const specialtySchema = z.object({
   name: z.string().min(1, "Nome da especialidade obrigatório"),
@@ -19,11 +20,10 @@ const specialtySchema = z.object({
 type SpecialtyFormInputs = z.infer<typeof specialtySchema>;
 
 export default function CreateSpecialtyPage() {
-  const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<SpecialtyFormInputs>({
     resolver: zodResolver(specialtySchema),
@@ -33,7 +33,7 @@ export default function CreateSpecialtyPage() {
     mutationFn: (data: SpecialtyFormInputs) => createSpecialty(data),
     onSuccess: () => {
       alert("Especialidade criada com sucesso!");
-      navigate("/");
+      reset();
     },
   });
 
@@ -49,6 +49,7 @@ export default function CreateSpecialtyPage() {
     <main className="h-screen w-full bg-[#0d0d0d]">
       <div className="absolute z-0 h-full w-full bg-[radial-gradient(#1d1d1d_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] [background-size:16px_16px]"></div>
       <PageLayout className="z-10 flex h-full flex-col items-center justify-center">
+        <Navbar />
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="z-10 aspect-[9/10] w-[480px] rounded-3xl border border-white/5 bg-gradient-to-br from-white/5 to-neutral-300/10 px-10 pt-8 pb-5 backdrop-blur-sm"
@@ -56,7 +57,6 @@ export default function CreateSpecialtyPage() {
           <Link to="/">
             <LucideMoveLeft className="size-6 text-neutral-300 hover:opacity-85" />
           </Link>
-
           <h1 className="mt-3 bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-4xl leading-14 font-semibold tracking-tighter text-transparent">
             Nova
             <br />
@@ -65,8 +65,6 @@ export default function CreateSpecialtyPage() {
           <p className="mt-4 text-sm font-medium tracking-tight text-neutral-500">
             Cadastre uma nova especialidade para seus serviços.
           </p>
-
-          {/* Name field */}
           <div className="mt-8">
             <div className="flex items-center gap-2">
               <LucideStethoscope className="size-4 text-neutral-500" />
@@ -90,8 +88,6 @@ export default function CreateSpecialtyPage() {
               {errors.name?.message}
             </p>
           </div>
-
-          {/* Duration field */}
           <div className="mt-3">
             <div className="flex items-center gap-2">
               <LucideClock className="size-4 text-neutral-500" />

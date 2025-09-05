@@ -37,3 +37,24 @@ export async function getAllBarbers() {
     throw error.response?.data || new Error("Unknown error");
   }
 }
+
+interface FindBarberSlotsByDateProps {
+  barberId: string;
+  date: Date;
+}
+
+export async function findBarberSlotsByDate({
+  barberId,
+  date,
+}: FindBarberSlotsByDateProps) {
+  try {
+    const { data } = await API.post<number[]>(`/barbers/slots`, {
+      barberId,
+      date,
+    });
+    return data;
+  } catch (error: unknown) {
+    // @ts-expect-error no types
+    throw error.response?.data || new Error("Unknown error");
+  }
+}

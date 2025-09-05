@@ -46,7 +46,7 @@ export default function Navbar({ className, ...rest }: NavbarProps) {
     <nav
       {...rest}
       className={twMerge(
-        "absolute top-0 left-0 z-20 flex h-16 w-full items-center justify-between border-b border-white/5 px-8",
+        "absolute top-0 left-0 z-20 flex h-16 w-full items-center justify-between border-b border-white/5 bg-[#0d0d0d]",
         className,
       )}
     >

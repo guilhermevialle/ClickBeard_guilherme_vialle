@@ -13,6 +13,7 @@ import { z } from "zod";
 import PageLayout from "../../lib/components/page-layout";
 import { createBarber } from "../../services/api/barber";
 import { getAllSpecialties } from "../../services/api/specialty";
+import Navbar from "../navbar";
 
 const barberSchema = z.object({
   name: z.string().min(1, "Nome obrigatório"),
@@ -84,6 +85,7 @@ export default function RegisterBarberPage() {
     <main className="h-screen w-full bg-[#0d0d0d]">
       <div className="absolute z-0 h-full w-full bg-[radial-gradient(#1d1d1d_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] [background-size:16px_16px]"></div>
       <PageLayout className="flex h-full flex-col items-center justify-center">
+        <Navbar />
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="z-10 w-[480px] rounded-3xl border border-white/5 bg-gradient-to-br from-white/5 to-neutral-300/10 px-10 pt-8 pb-5 backdrop-blur-sm"
