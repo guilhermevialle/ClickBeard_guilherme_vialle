@@ -40,7 +40,7 @@ export default function AppointmentCard({
       // @ts-expect-error types mismatch
       queryClient.invalidateQueries(["customer-appointments"]);
     },
-    onError: (err) => console.error(err),
+    onError: (err) => alert(err.message),
   });
 
   return (

@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   addDays,
-  addMinutes,
   format,
   isBefore,
   isSameDay,
@@ -11,7 +10,7 @@ import {
 } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { LucideChevronLeft, LucideChevronRight } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Button,
   Dialog,
@@ -25,6 +24,7 @@ import { useWeekNavigation } from "../hooks/use-week-navigation";
 import { createAppointment } from "../services/api/appointment";
 import { findBarberSlotsByDate, getAllBarbers } from "../services/api/barber";
 import { minutesToTimeString } from "../utils/minutes-to-date";
+import { setDateMinutes } from "../utils/set-date-minutes";
 
 interface ScheduleModalProps {
   specialties: Specialty[];
@@ -32,7 +32,7 @@ interface ScheduleModalProps {
 
 export default function ScheduleModal({ specialties }: ScheduleModalProps) {
   const { nextWeek, prevWeek, weekStart } = useWeekNavigation();
-  const [date, setDate] = useState(() => addDays(new Date(), 1));
+  const [date, setDate] = useState(() => new Date());
   const [slot, setSlot] = useState<number | null>(null);
   const [barberId, setBarberId] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -47,15 +47,19 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
     queryFn: getAllBarbers,
   });
 
-  const { data: slots = [] } = useQuery<number[]>({
+  const { data: slots } = useQuery<number[]>({
     queryKey: ["barberSlots", barberId, date],
+    /*************  ✨ Windsurf Command ⭐  *************/
+    /**
+     * Fetches the slots for the selected barber and date.
+     * If barberId is null, returns an empty array.
+     */
+    /*******  c53ce150-523e-4264-901d-975363a4083d  *******/
     queryFn: () =>
-      barberId
-        ? findBarberSlotsByDate({
-            barberId: barberId,
-            date: date,
-          })
-        : Promise.resolve([]),
+      findBarberSlotsByDate({
+        barberId: barberId ?? "",
+        date: date,
+      }),
     placeholderData: [],
   });
 
@@ -70,15 +74,8 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
     },
   });
 
-  useEffect(() => {
-    if (slot !== null) {
-      const dateTime = addMinutes(startOfDay(date), slot);
-      console.log("Selected datetime:", dateTime.toISOString());
-    }
-  }, [date, slot]);
-
   const showBarberSlots = useMemo(
-    () => barberId && slots.length > 0,
+    () => barberId && slots && slots.length > 0,
     [barberId, slots],
   );
 
@@ -90,7 +87,7 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
 
     return (
       <DialogTrigger key={specialty.id}>
-        <Button className="flex w-full justify-between px-6 py-2 hover:bg-[#2d2d2f]">
+        <Button className="flex w-full cursor-pointer justify-between px-6 py-2 hover:bg-[#2d2d2f]">
           <span className="font-medium text-neutral-300">{specialty.name}</span>
           <span className="font-medium text-neutral-400">
             {specialty.durationInMinutes} min
@@ -135,7 +132,11 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                   return (
                     <button
                       key={day.toISOString()}
-                      onClick={() => setDate(day)}
+                      onClick={() => {
+                        setSlot(null);
+                        setBarberId(null);
+                        setDate(day);
+                      }}
                       disabled={isPast}
                       className={twMerge(
                         "flex h-full w-full cursor-pointer flex-col items-center justify-between gap-3 rounded-2xl border border-[#2d2d2d] py-2 transition hover:bg-[#2d2d2d]",
@@ -171,7 +172,12 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                     return (
                       <button
                         key={barber.id}
-                        onClick={() => setBarberId(barber.id)}
+                        onClick={() => {
+                          if (barberId === barber.id) return setBarberId(null);
+
+                          setSlot(null);
+                          setBarberId(barber.id);
+                        }}
                         className={twMerge(
                           "flex h-[114px] cursor-pointer flex-col items-center justify-center gap-3 rounded-xl px-4 transition",
                           isActive ? "bg-blue-500" : "hover:bg-[#2d2d2d]",
@@ -203,7 +209,7 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
               <div className="mt-6 flex h-64 items-center justify-center">
                 {showBarberSlots ? (
                   <div className="mt-6 grid size-full grid-cols-4 gap-3">
-                    {slots.map((s) => (
+                    {slots?.map((s) => (
                       <button
                         key={s}
                         onClick={() => setSlot(s)}
@@ -232,7 +238,7 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                       createAppointmentMutation.mutate({
                         barberId,
                         specialtyId: specialty.id,
-                        startAt: addMinutes(startOfDay(date), slot),
+                        startAt: setDateMinutes(date, slot),
                       });
                     }}
                   >

@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import PageLayout from "../../lib/components/page-layout";
 import { getAdminDashboardData } from "../../services/api/admin";
@@ -16,19 +17,63 @@ const STATUS_LABELS = {
   CANCELLED: "Cancelado",
 };
 
+type Status = "ALL" | "CONFIRMED" | "COMPLETED" | "CANCELLED";
+
 export default function AdminPage() {
+  const [date, setDate] = useState(
+    () => new Date().toISOString().split("T")[0],
+  );
+
   const { data } = useQuery({
-    queryFn: () => getAdminDashboardData(new Date()),
-    queryKey: ["admin-dashboard"],
+    queryFn: () => {
+      const [year, month, day] = date.split("-").map(Number);
+      const localDate = new Date(year, month - 1, day);
+      return getAdminDashboardData(localDate);
+    },
+    queryKey: ["admin-dashboard", date],
   });
+
+  const [status, setStatus] = useState<Status>("ALL");
+
+  const filteredAppointments = useMemo(() => {
+    if (status === "ALL") return data;
+
+    return data?.filter((ap) => ap.status === status);
+  }, [data, status]);
 
   return (
     <main className="h-screen w-full bg-[#0d0d0d]">
       <div className="absolute z-0 h-full w-full bg-[radial-gradient(#1d1d1d_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] [background-size:16px_16px]"></div>
-      <PageLayout>
+      <PageLayout className="flex flex-col">
         <Navbar />
-        <div className="flex h-full w-full flex-wrap justify-center gap-6 overflow-y-auto py-32">
-          {data?.map((appointment) => {
+        <div className="w-full cursor-pointer pt-40 pb-10 text-neutral-300">
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+          <select
+            name="status"
+            id="status"
+            value={status}
+            onChange={(e) => setStatus(e.target.value as Status)}
+          >
+            <option className="bg-black" value="ALL">
+              Todos
+            </option>
+            <option className="bg-black" value="CONFIRMED">
+              Confirmados
+            </option>
+            <option className="bg-black" value="COMPLETED">
+              Concluídos
+            </option>
+            <option className="bg-black" value="CANCELLED">
+              Cancelados
+            </option>
+          </select>
+        </div>
+        <div className="flex w-full grow flex-wrap justify-center gap-6 overflow-y-auto">
+          {filteredAppointments?.map((appointment) => {
             const {
               id,
               barberName,
