@@ -1,11 +1,6 @@
-import {
-  LucideCalendar,
-  LucideChevronRight,
-  LucideLogOut,
-  LucideUser,
-} from "lucide-react";
+import { LucideCalendar, LucideChevronRight, LucideLogOut } from "lucide-react";
 import { Button, Dialog, DialogTrigger, Popover } from "react-aria-components";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { twMerge } from "tailwind-merge";
 import { useUserSession } from "../hooks/use-user-session";
 
@@ -17,16 +12,11 @@ const MENU_ITEMS = [
     to: "/me/appointments",
     icon: LucideCalendar,
   },
-  {
-    label: "Perfil",
-    to: "/me/profile",
-    icon: LucideUser,
-  },
 ];
 
 const NAVBAR_LINKS = [
   {
-    label: "Admin panel",
+    label: "Admin",
     to: "/admin",
   },
   {
@@ -37,16 +27,21 @@ const NAVBAR_LINKS = [
     label: "Cadastrar especialidade",
     to: "/specialty/new",
   },
+  {
+    label: "Agendar",
+    to: "/schedule",
+  },
 ];
 
 export default function Navbar({ className, ...rest }: NavbarProps) {
   const { session, clearSession } = useUserSession();
+  const navigate = useNavigate();
 
   return (
     <nav
       {...rest}
       className={twMerge(
-        "absolute top-0 left-0 z-20 flex h-16 w-full items-center justify-between border-b border-white/5 bg-[#0d0d0d]",
+        "absolute top-8 left-0 z-20 flex h-16 w-full items-center justify-between rounded-full border-b border-white/5 bg-[#0d0d0d] px-6 shadow-xl",
         className,
       )}
     >
@@ -93,7 +88,10 @@ export default function Navbar({ className, ...rest }: NavbarProps) {
                     );
                   })}
                   <button
-                    onClick={clearSession}
+                    onClick={() => {
+                      clearSession();
+                      navigate("/");
+                    }}
                     className="flex w-full cursor-pointer items-center gap-4 px-4 py-2 text-left font-medium tracking-tight text-neutral-300 transition-all hover:bg-[#2d2d2d]"
                   >
                     <LucideLogOut className="size-[18px]" />

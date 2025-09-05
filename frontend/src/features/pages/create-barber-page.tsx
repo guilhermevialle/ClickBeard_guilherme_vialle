@@ -208,20 +208,18 @@ export default function RegisterBarberPage() {
               {errors.specialties?.message}
             </p>
           </div>
-
-          <div className="mt-2 h-6">
+          <div className="h-5">
             {mutation?.isError && (
               <p className="text-xs text-red-500">
                 {(mutation.error as Error)?.message ||
-                  "Ocorreu um erro no login"}
+                  "Erro ao cadastrar barbeiro"}
               </p>
             )}
           </div>
-
           <button
             type="submit"
             disabled={isLoading || mutation.isPending}
-            className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white font-medium text-black transition-all hover:opacity-85 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+            className="mt-2 flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-white font-medium text-black transition-all hover:opacity-85 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {mutation.isPending ? (
               <>

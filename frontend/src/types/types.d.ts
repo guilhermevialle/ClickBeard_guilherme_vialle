@@ -59,3 +59,15 @@ type CustomerAppointment = {
 };
 
 type CustomerAppointments = Array<CustomerAppointment>;
+
+type AdminDashboardData = Array<{
+  id: string;
+  barberName: string;
+  customerName: string;
+  specialtyName: string;
+  durationInMinutes: number;
+  status: "CONFIRMED" | "CANCELLED" | "COMPLETED";
+  startAt: string;
+  createdAt: Date;
+  updatedAt: Date;
+}>;

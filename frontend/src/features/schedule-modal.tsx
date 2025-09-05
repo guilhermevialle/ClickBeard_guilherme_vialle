@@ -77,6 +77,11 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
     }
   }, [date, slot]);
 
+  const showBarberSlots = useMemo(
+    () => barberId && slots.length > 0,
+    [barberId, slots],
+  );
+
   return specialties.map((specialty) => {
     const specialtyBarbers =
       barbers?.filter((b) =>
@@ -133,7 +138,7 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                       onClick={() => setDate(day)}
                       disabled={isPast}
                       className={twMerge(
-                        "flex h-full w-full flex-col items-center justify-between gap-3 rounded-2xl border border-[#2d2d2d] py-2 transition hover:bg-[#2d2d2d]",
+                        "flex h-full w-full cursor-pointer flex-col items-center justify-between gap-3 rounded-2xl border border-[#2d2d2d] py-2 transition hover:bg-[#2d2d2d]",
                         isSelected && "border-[#404040] bg-[#2d2d2d]",
                         isPast &&
                           "cursor-not-allowed opacity-30 hover:bg-transparent",
@@ -168,7 +173,7 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                         key={barber.id}
                         onClick={() => setBarberId(barber.id)}
                         className={twMerge(
-                          "flex h-[114px] flex-col items-center justify-center gap-3 rounded-xl px-4 transition",
+                          "flex h-[114px] cursor-pointer flex-col items-center justify-center gap-3 rounded-xl px-4 transition",
                           isActive ? "bg-blue-500" : "hover:bg-[#2d2d2d]",
                         )}
                       >
@@ -195,28 +200,34 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                   )}
                 </div>
               </div>
-
-              {barberId && slots.length > 0 && (
-                <div className="mt-6 grid grid-cols-4 gap-3">
-                  {slots.map((s) => (
-                    <button
-                      key={s}
-                      onClick={() => setSlot(s)}
-                      className={twMerge(
-                        "cursor-pointer rounded-lg border border-[#2d2d2d] px-4 py-2 text-center text-neutral-300 transition hover:bg-[#2d2d2d]",
-                        s === slot && "bg-[#2d2d2d] text-white",
-                      )}
-                    >
-                      {minutesToTimeString(s)}
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              {barberId && slot !== null && (
-                <div className="mt-8 flex w-full justify-end">
+              <div className="mt-6 flex h-64 items-center justify-center">
+                {showBarberSlots ? (
+                  <div className="mt-6 grid size-full grid-cols-4 gap-3">
+                    {slots.map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => setSlot(s)}
+                        className={twMerge(
+                          "cursor-pointer rounded-lg border border-[#2d2d2d] px-4 py-2 text-center text-neutral-300 transition hover:bg-[#2d2d2d]",
+                          s === slot && "bg-[#2d2d2d] text-white",
+                        )}
+                      >
+                        {minutesToTimeString(s)}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex size-full items-center justify-center">
+                    <p className="text-center text-xl font-medium tracking-tight text-neutral-500">
+                      Escolha um barbeiro para ver as horas disponíveis
+                    </p>
+                  </div>
+                )}
+              </div>
+              <div className="mt-8 flex h-10 w-full items-center justify-end">
+                {barberId && slot !== null && (
                   <button
-                    className="w-full rounded-lg bg-white px-4 py-2 text-center font-medium tracking-tight text-black transition hover:opacity-85"
+                    className="h-fit w-fit cursor-pointer rounded-full bg-white px-6 py-2 text-center font-medium tracking-tight text-black transition hover:opacity-85"
                     onClick={() => {
                       createAppointmentMutation.mutate({
                         barberId,
@@ -227,8 +238,8 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                   >
                     Agendar agora
                   </button>
-                </div>
-              )}
+                )}
+              </div>
             </Dialog>
           </Modal>
         </ModalOverlay>
