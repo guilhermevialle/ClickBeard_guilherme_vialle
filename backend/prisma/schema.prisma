@@ -3,14 +3,10 @@ generator client {
   output   = "../src/generated/prisma"
 }
 
-generator erd {
-  provider = "prisma-erd-generator"
-  output   = "../docs/ERD.erd"
-}
-
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  // obviamente nao iremos colocar isso aqui. eh apenas para fins educativos, nao eh o intuito do teste
+  url      = "postgresql://postgres:postgres@localhost:5432/click_beard_db?schema=public"
 }
 
 model Customer {
