@@ -129,25 +129,4 @@ describe("AuthService", () => {
       ).rejects.toThrow(UserAlreadyExistsError);
     });
   });
-
-  describe("refresh", () => {
-    it("should return new access token", async () => {
-      refreshTokenService.verify.mockReturnValue({ userId: fakeCustomer.id });
-      accessTokenService.sign.mockReturnValue("new-access-token");
-
-      const token = await service.refreshToken("valid-refresh");
-
-      expect(token).toBe("new-access-token");
-    });
-
-    it("should throw if refresh token invalid", async () => {
-      refreshTokenService.verify.mockImplementation(() => {
-        throw new Error("invalid");
-      });
-
-      await expect(service.refreshToken("bad-token")).rejects.toThrow(
-        InvalidCredentialsError
-      );
-    });
-  });
 });

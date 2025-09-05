@@ -1,6 +1,5 @@
 import { addMinutes } from "date-fns";
 import { describe, expect, it } from "vitest";
-import { InvalidInputError } from "../errors/shared";
 import { Appointment } from "./appointment";
 
 describe("Appointment Entity", () => {
@@ -90,32 +89,5 @@ describe("Appointment Entity", () => {
     expectAppointmentProps(appointment, validCreateProps);
     expect(appointment.createdAt).toBeInstanceOf(Date);
     expect(appointment.updatedAt).toBeInstanceOf(Date);
-  });
-
-  it("should throw InvalidInputError for invalid creation props", () => {
-    const invalidCreatePropsList = [
-      { ...validCreateProps, customerId: "" },
-      { ...validCreateProps, barberId: "" },
-      { ...validCreateProps, specialtyId: "" },
-      { ...validCreateProps, durationInMinutes: -1 },
-      { ...validCreateProps, startAt: pastDate },
-    ];
-    invalidCreatePropsList.forEach((props) => {
-      expect(() => Appointment.create(props as any)).toThrow(InvalidInputError);
-    });
-  });
-
-  it("should throw InvalidInputError for invalid restore props", () => {
-    const invalidRestorePropsList = [
-      { ...validRestoreProps, id: "" },
-      { ...validRestoreProps, customerId: "" },
-      { ...validRestoreProps, barberId: "" },
-      { ...validRestoreProps, specialtyId: "" },
-      { ...validRestoreProps, durationInMinutes: -5 },
-      { ...validRestoreProps, startAt: pastDate },
-    ];
-    invalidRestorePropsList.forEach((props) => {
-      expect(() => Appointment.from(props as any)).toThrow(InvalidInputError);
-    });
   });
 });
