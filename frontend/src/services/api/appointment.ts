@@ -54,14 +54,18 @@ export async function cancelAppointment(id: string) {
   const accessToken = getAccessToken();
 
   try {
-    const { data } = await API.delete<{
+    const { data } = await API.patch<{
       message: string;
       statusCode: number;
-    }>(`/appointments/${id}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
+    }>(
+      `/appointments/${id}`,
+      {}, // body vazio, já que só precisa do header
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       },
-    });
+    );
 
     return data;
   } catch (error: unknown) {

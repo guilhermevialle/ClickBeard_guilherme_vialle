@@ -3,6 +3,11 @@ generator client {
   output   = "../src/generated/prisma"
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "../docs/ERD.erd"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")

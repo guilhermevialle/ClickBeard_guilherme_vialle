@@ -8,18 +8,6 @@ interface AppointmentCardProps extends React.HTMLAttributes<HTMLDivElement> {
   appointment: CustomerAppointment;
 }
 
-const STATUS_STYLES = {
-  CONFIRMED: "bg-green-800/20 text-green-300",
-  COMPLETED: "bg-orange-800/20 text-orange-300",
-  CANCELLED: "bg-red-800/20 text-red-300",
-};
-
-const STATUS = {
-  CONFIRMED: "Confirmado",
-  COMPLETED: "Concluído",
-  CANCELLED: "Cancelado",
-};
-
 export default function AppointmentCard({
   className,
   appointment,
@@ -27,7 +15,7 @@ export default function AppointmentCard({
 }: AppointmentCardProps) {
   const { barber, durationInMinutes, startAt, id, status, specialty } =
     appointment;
-  const wasFinished = addMinutes(startAt, durationInMinutes) < new Date();
+  const isFinished = addMinutes(startAt, durationInMinutes) < new Date();
   const startDate = new Date(startAt).toLocaleDateString();
   const startTime = new Date(startAt).toLocaleTimeString([], {
     hour: "2-digit",
@@ -94,16 +82,35 @@ export default function AppointmentCard({
       </div>
       <div className="space-y-3 border-t border-neutral-800/50 pt-4">
         <div className="flex items-center justify-between">
-          <span
-            className={twMerge(
-              "rounded-full px-3 py-1 text-xs font-medium tracking-tight",
-              STATUS_STYLES[status as keyof typeof STATUS_STYLES],
-            )}
-          >
-            {STATUS[status as keyof typeof STATUS]}
-          </span>
+          {(isFinished || status === "COMPLETED") && (
+            <span
+              className={twMerge(
+                "rounded-full bg-blue-800/20 px-3 py-1 text-xs font-medium tracking-tight text-blue-300",
+              )}
+            >
+              FINALIZADO
+            </span>
+          )}
+          {status === "CANCELLED" && (
+            <span
+              className={twMerge(
+                "rounded-full bg-red-800/20 px-3 py-1 text-xs font-medium tracking-tight text-red-300",
+              )}
+            >
+              CANCELADO
+            </span>
+          )}
+          {status === "CONFIRMED" && !isFinished && (
+            <span
+              className={twMerge(
+                "rounded-full bg-emerald-800/20 px-3 py-1 text-xs font-medium tracking-tight text-emerald-300",
+              )}
+            >
+              CONFIRMADO
+            </span>
+          )}
         </div>
-        {!wasFinished && status === "CONFIRMED" && (
+        {!isFinished && status === "CONFIRMED" && (
           <button
             onClick={() => mutation.mutate(id)}
             disabled={mutation.isPending}

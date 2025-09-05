@@ -30,7 +30,7 @@ export async function createBarber({
 
 export async function getAllBarbers() {
   try {
-    const { data } = await API.get<Barber[]>("/barbers/bff");
+    const { data } = await API.get<Barber[]>("/barbers/all/bff");
     return data;
   } catch (error: unknown) {
     // @ts-expect-error no types

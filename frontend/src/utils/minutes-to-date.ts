@@ -1,7 +1,7 @@
 import { format, setHours, setMinutes, startOfDay } from "date-fns";
 
 export const minutesToTimeString = (minutes: number) => {
-  const date = startOfDay(new Date()); // today at 00:00
+  const date = startOfDay(new Date());
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;
   const withHours = setHours(date, hours);

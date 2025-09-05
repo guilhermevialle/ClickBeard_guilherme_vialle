@@ -49,18 +49,12 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
 
   const { data: slots } = useQuery<number[]>({
     queryKey: ["barberSlots", barberId, date],
-    /*************  ✨ Windsurf Command ⭐  *************/
-    /**
-     * Fetches the slots for the selected barber and date.
-     * If barberId is null, returns an empty array.
-     */
-    /*******  c53ce150-523e-4264-901d-975363a4083d  *******/
     queryFn: () =>
       findBarberSlotsByDate({
         barberId: barberId ?? "",
         date: date,
       }),
-    placeholderData: [],
+    enabled: !!barberId && !!date,
   });
 
   const createAppointmentMutation = useMutation({

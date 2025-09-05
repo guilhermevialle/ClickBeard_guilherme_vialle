@@ -28,7 +28,7 @@ export default function AdminPage() {
     queryFn: () => {
       const [year, month, day] = date.split("-").map(Number);
       const localDate = new Date(year, month - 1, day);
-      return getAdminDashboardData(new Date());
+      return getAdminDashboardData(localDate);
     },
     queryKey: ["admin-dashboard", date],
   });
