@@ -2,6 +2,7 @@ import cors from "@fastify/cors";
 import "dotenv/config";
 import "reflect-metadata";
 import { ApplicationError } from "./application/errors/application.error";
+import { BadRequestError } from "./application/errors/shared";
 import "./container";
 import { DomainError } from "./domain/errors/domain.error";
 import { adminRoutes } from "./infra/http/routes/admin.route";
@@ -21,6 +22,14 @@ app.register(cors, {
   methods: ["GET", "POST", "PUT", "DELETE"],
 });
 
+app.register(import("@fastify/swagger"));
+app.register(import("@fastify/swagger-ui"), {
+  routePrefix: "/documentation",
+  uiConfig: { docExpansion: "full", deepLinking: false },
+  staticCSP: true,
+});
+
+// error handler
 app.setErrorHandler(
   (
     error: fastify.FastifyError,
@@ -35,11 +44,20 @@ app.setErrorHandler(
       return reply.status(error.statusCode).send(error.toJSON());
     }
 
-    console.error(error);
-    return reply.status(500).send({ message: "Internal Server Error" });
+    if (error instanceof BadRequestError) {
+      return reply.status(400).send(error.toJSON());
+    }
+
+    console.log(error);
+    return reply.status(500).send({
+      message: "Internal Server Error",
+      errorCode: "INTERNAL_SERVER_ERROR",
+      statusCode: 500,
+    });
   }
 );
 
+// rotas
 barberRoutes(app);
 authRoutes(app);
 specialtyRoutes(app);

@@ -6,7 +6,7 @@ import { GetAllBarbers } from "../../../application/use-cases/get-all-barbers";
 import { GetAllBarbersForBff } from "../../../application/use-cases/get-all-barbers-for-bff";
 import { BarberController } from "../controllers/barber.controller";
 
-export function barberRoutes(fastify: FastifyInstance) {
+export function barberRoutes(app: FastifyInstance) {
   const createBarberWithSpecialties =
     container.resolve<CreateBarberWithSpecialties>(
       "CreateBarberWithSpecialties"
@@ -25,16 +25,13 @@ export function barberRoutes(fastify: FastifyInstance) {
     findBarberSlotsByDate
   );
 
-  fastify.post(
+  app.post(
     "/barbers/new",
     barberController.createBarber.bind(barberController)
   );
-  fastify.get("/barbers", barberController.getAll.bind(barberController));
-  fastify.get(
-    "/barbers/bff",
-    barberController.getAllForBff.bind(barberController)
-  );
-  fastify.post(
+  app.get("/barbers", barberController.getAll.bind(barberController));
+  app.get("/barbers/bff", barberController.getAllForBff.bind(barberController));
+  app.post(
     "/barbers/slots",
     barberController.getBarberSlotsByDate.bind(barberController)
   );

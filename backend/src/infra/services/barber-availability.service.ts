@@ -2,6 +2,7 @@ import {
   addMinutes,
   areIntervalsOverlapping,
   getDay,
+  isAfter,
   isSameDay,
   startOfDay,
 } from "date-fns";
@@ -74,7 +75,7 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
     const workday = barber.workdays.find((wd) => wd.weekday === weekday);
     if (!workday) return [];
 
-    const availableSlots = workday.shifts.flatMap((shift) =>
+    const allBarberSlotsPossibility = workday.shifts.flatMap((shift) =>
       Array.from(
         {
           length: Math.floor(
@@ -92,18 +93,28 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
         isSameDay(a.startAt, date) && !a.wasFinished && a.status === "CONFIRMED"
     );
 
-    const freeSlots = availableSlots.filter((minutes) => {
-      const start = addMinutes(startOfDay(date), minutes);
-      const end = addMinutes(start, SLOT_STEP_MINUTES);
+    const now = new Date();
+    const currentDate = startOfDay(date);
 
-      return !dayAppointments.some((appointment) =>
+    const availableSlots = allBarberSlotsPossibility.filter((slotMinutes) => {
+      const slotStartTime = addMinutes(currentDate, slotMinutes);
+      const slotEndTime = addMinutes(slotStartTime, SLOT_STEP_MINUTES);
+
+      if (isSameDay(date, now) && !isAfter(slotStartTime, now)) {
+        return false;
+      }
+
+      const hasConflict = dayAppointments.some((appointment) =>
         areIntervalsOverlapping(
-          { start, end },
-          { start: appointment.startAt, end: appointment.endAt }
+          { start: slotStartTime, end: slotEndTime },
+          { start: appointment.startAt, end: appointment.endAt },
+          { inclusive: false }
         )
       );
+
+      return !hasConflict;
     });
 
-    return freeSlots;
+    return availableSlots;
   }
 }
