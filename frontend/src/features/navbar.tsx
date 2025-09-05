@@ -8,7 +8,7 @@ type NavbarProps = React.HTMLAttributes<HTMLDivElement>;
 
 const MENU_ITEMS = [
   {
-    label: "Agendamentos",
+    label: "Meus agendamentos",
     to: "/me/appointments",
     icon: LucideCalendar,
   },
@@ -72,7 +72,7 @@ export default function Navbar({ className, ...rest }: NavbarProps) {
               <Dialog>
                 <Popover
                   className={
-                    "flex h-fit w-72 flex-col rounded-xl border border-white/5 bg-[#0d0d0d] py-2"
+                    "flex h-fit w-60 flex-col rounded-xl border border-white/5 bg-[#0d0d0d] py-2"
                   }
                 >
                   {MENU_ITEMS.map(({ icon: Icon, label, to }, index) => {

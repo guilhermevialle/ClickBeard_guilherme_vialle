@@ -1,5 +1,5 @@
 import { API } from "./client";
-import { getToken } from "./get-token";
+import { getAccessToken } from "./get-token";
 
 interface CreateAppointmentProps {
   barberId: string;
@@ -22,7 +22,7 @@ export async function createAppointment({
       },
       {
         headers: {
-          Authorization: `Bearer ${getToken()}`,
+          Authorization: `Bearer ${getAccessToken()}`,
         },
       },
     );
@@ -35,10 +35,12 @@ export async function createAppointment({
 }
 
 export async function getAllAppointments() {
+  const accessToken = getAccessToken();
+
   try {
     const { data } = await API.get<CustomerAppointments>("/appointments/me", {
       headers: {
-        Authorization: `Bearer ${getToken()}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     return data;
@@ -49,13 +51,15 @@ export async function getAllAppointments() {
 }
 
 export async function cancelAppointment(id: string) {
+  const accessToken = getAccessToken();
+
   try {
     const { data } = await API.delete<{
       message: string;
       statusCode: number;
     }>(`/appointments/${id}`, {
       headers: {
-        Authorization: `Bearer ${getToken()}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 

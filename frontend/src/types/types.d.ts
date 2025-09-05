@@ -6,6 +6,7 @@ interface UserSession {
   };
   session: {
     accessToken: string;
+    refreshToken: string;
   };
 }
 
@@ -41,6 +42,8 @@ type Appointment = {
   updatedAt: Date;
 };
 
+type AppointmentStatus = "CONFIRMED" | "CANCELLED" | "COMPLETED";
+
 type CustomerAppointment = {
   id: string;
   barber: {
@@ -55,7 +58,7 @@ type CustomerAppointment = {
   durationInMinutes: number;
   createdAt: Date;
   updatedAt: Date;
-  status: "CONFIRMED" | "CANCELLED" | "COMPLETED";
+  status: AppointmentStatus;
 };
 
 type CustomerAppointments = Array<CustomerAppointment>;
@@ -66,7 +69,7 @@ type AdminDashboardData = Array<{
   customerName: string;
   specialtyName: string;
   durationInMinutes: number;
-  status: "CONFIRMED" | "CANCELLED" | "COMPLETED";
+  status: AppointmentStatus;
   startAt: string;
   createdAt: Date;
   updatedAt: Date;

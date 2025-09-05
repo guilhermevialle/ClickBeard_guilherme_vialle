@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import App from "./App.tsx";
+import AuthGuard from "./features/auth-guard.tsx";
 import AdminPage from "./features/pages/admin-page.tsx";
 import AppointmentsPage from "./features/pages/appointments-page.tsx";
 import CreateBarberPage from "./features/pages/create-barber-page.tsx";
@@ -16,18 +17,20 @@ import "./lib/fonts/manrope.ts";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/specialty/new" element={<CreateSpecialtyPage />} />
-          <Route path="/barber/new" element={<CreateBarberPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/schedule" element={<SchedulePage />} />
-          <Route path="/me/appointments" element={<AppointmentsPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthGuard>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<App />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/specialty/new" element={<CreateSpecialtyPage />} />
+            <Route path="/barber/new" element={<CreateBarberPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/schedule" element={<SchedulePage />} />
+            <Route path="/me/appointments" element={<AppointmentsPage />} />
+            <Route path="/admin" element={<AdminPage />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthGuard>
     </QueryProvider>
   </StrictMode>,
 );
