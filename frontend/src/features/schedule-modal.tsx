@@ -68,16 +68,17 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
     },
   });
 
-  const showBarberSlots = useMemo(
-    () => barberId && slots && slots.length > 0,
-    [barberId, slots],
-  );
-
   return specialties.map((specialty) => {
     const specialtyBarbers =
       barbers?.filter((b) =>
         b.specialties.some((s) => s.id === specialty.id),
       ) || [];
+
+    const showBarberSlots =
+      barberId !== null &&
+      specialtyBarbers.some((b) => b.id === barberId) &&
+      slots &&
+      slots.length > 0;
 
     return (
       <DialogTrigger key={specialty.id}>
@@ -97,6 +98,7 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
             isDismissable
           >
             <Dialog>
+              {/* Navegação da semana */}
               <div className="mb-6 flex items-center justify-between">
                 <Button
                   onPress={prevWeek}
@@ -117,6 +119,7 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                 </Button>
               </div>
 
+              {/* Seleção do dia */}
               <div className="flex h-24 justify-between gap-3 px-2">
                 {weekDays.map((day) => {
                   const isSelected = isSameDay(day, date);
@@ -155,6 +158,7 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                 {format(weekDays[6], "d MMM yyyy", { locale: ptBR })}
               </div>
 
+              {/* Seleção do barbeiro */}
               <div className="mt-8">
                 <h4 className="text-xl font-medium text-neutral-200">
                   Selecione um barbeiro para {specialty.name}
@@ -168,7 +172,6 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                         key={barber.id}
                         onClick={() => {
                           if (barberId === barber.id) return setBarberId(null);
-
                           setSlot(null);
                           setBarberId(barber.id);
                         }}
@@ -200,6 +203,8 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                   )}
                 </div>
               </div>
+
+              {/* Slots */}
               <div className="mt-6 flex h-64 items-center justify-center">
                 {showBarberSlots ? (
                   <div className="mt-6 grid size-full grid-cols-4 gap-3">
@@ -224,6 +229,8 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                   </div>
                 )}
               </div>
+
+              {/* Botão Agendar */}
               <div className="mt-8 flex h-10 w-full items-center justify-end">
                 {barberId && slot !== null && (
                   <button
