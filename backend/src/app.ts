@@ -5,6 +5,7 @@ import { ApplicationError } from "./application/errors/application.error";
 import { BadRequestError } from "./application/errors/shared";
 import "./container";
 import { DomainError } from "./domain/errors/domain.error";
+import { InvalidInputError } from "./domain/errors/shared";
 import { adminRoutes } from "./infra/http/routes/admin.route";
 import { appointmentRoutes } from "./infra/http/routes/appointment.route";
 import { authRoutes } from "./infra/http/routes/auth.route";
@@ -48,7 +49,10 @@ app.setErrorHandler(
       return reply.status(400).send(error.toJSON());
     }
 
-    console.log(error);
+    if (error instanceof InvalidInputError) {
+      return reply.status(400).send(error.toJSON());
+    }
+
     return reply.status(500).send({
       message: "Internal Server Error",
       errorCode: "INTERNAL_SERVER_ERROR",

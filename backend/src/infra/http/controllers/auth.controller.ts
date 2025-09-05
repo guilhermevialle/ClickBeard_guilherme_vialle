@@ -3,7 +3,11 @@ import { inject, injectable } from "tsyringe";
 import { BadRequestError } from "../../../application/errors/shared";
 import { IAuthController } from "../../interfaces/controllers/auth-controller.interface";
 import type { IAuthService } from "../../interfaces/services/auth-service.interface";
-import { authLoginSchemaDto, authRegisterSchemaDto } from "./dtos/auth.dto";
+import {
+  authLoginSchemaDto,
+  authRefreshTokenSchemaDto,
+  authRegisterSchemaDto,
+} from "./dtos/auth.dto";
 
 @injectable()
 export class AuthController implements IAuthController {
@@ -42,5 +46,21 @@ export class AuthController implements IAuthController {
     });
 
     return reply.status(200).send(session);
+  }
+
+  async refreshSession(
+    request: FastifyRequest,
+    reply: FastifyReply
+  ): Promise<void> {
+    const body = request.body;
+    const result = authRefreshTokenSchemaDto.safeParse(body);
+
+    if (!result.success) throw new BadRequestError(result.error.message);
+
+    const { refreshToken } = result.data;
+
+    const tokens = await this.authService.refreshToken(refreshToken);
+
+    return reply.status(200).send(tokens);
   }
 }

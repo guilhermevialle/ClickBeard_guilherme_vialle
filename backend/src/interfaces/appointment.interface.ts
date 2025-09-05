@@ -1,4 +1,3 @@
-import { isAfter } from "date-fns";
 import z from "zod";
 import { idSchema } from "../utils/id-schema";
 
@@ -11,11 +10,7 @@ export const createAppointmentSchema = z.object({
     .number("Duration must be a number")
     .int("Duration must be an integer")
     .positive("Duration must be greater than 0"),
-  startAt: z.coerce
-    .date("StartAt must be a valid date")
-    .refine((date) => isAfter(date, new Date()), {
-      message: "StartAt must be in the future",
-    }),
+  startAt: z.coerce.date("StartAt must be a valid date"),
 });
 
 // pode adicionar mais props nao necessarias para o create

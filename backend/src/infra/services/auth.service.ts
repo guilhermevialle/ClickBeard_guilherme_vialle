@@ -6,7 +6,6 @@ import {
 import { Customer } from "../../domain/entities/customer";
 import {
   AuthenticateCustomerDto,
-  RegisterBarberDto,
   RegisterCustomerDto,
   UserSession,
 } from "../http/dtos/auth.dto";
@@ -96,18 +95,28 @@ export class AuthService implements IAuthService {
     };
   }
 
-  async registerBarber(data: RegisterBarberDto): Promise<void> {}
-
-  async refreshToken(refreshToken: string): Promise<string> {
+  async refreshToken(
+    oldRefreshToken: string
+  ): Promise<{ accessToken: string; refreshToken: string }> {
     try {
       const payload =
-        this.refreshTokenService.verify<AuthTokenPayload>(refreshToken);
+        this.refreshTokenService.verify<AuthTokenPayload>(oldRefreshToken);
+
+      if (!payload)
+        throw new InvalidCredentialsError("Invalid or expired refresh token.");
 
       const newAccessToken = this.accessTokenService.sign({
-        userId: payload?.userId,
+        userId: payload.userId,
       });
 
-      return newAccessToken;
+      const newRefreshToken = this.refreshTokenService.sign({
+        userId: payload.userId,
+      });
+
+      return {
+        accessToken: newAccessToken,
+        refreshToken: newRefreshToken,
+      };
     } catch {
       throw new InvalidCredentialsError("Invalid or expired refresh token.");
     }

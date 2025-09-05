@@ -28,7 +28,7 @@ model Barber {
 
 model BarberWorkday {
   id       String               @id
-  barber   Barber               @relation(fields: [barberId], references: [id])
+  barber   Barber               @relation(fields: [barberId], references: [id], onDelete: Cascade)
   barberId String
   weekday  Int
   shifts   BarberWorkdayShift[]
@@ -36,7 +36,7 @@ model BarberWorkday {
 
 model BarberWorkdayShift {
   id               String        @id
-  barberWorkday    BarberWorkday @relation(fields: [barberWorkdayId], references: [id])
+  barberWorkday    BarberWorkday @relation(fields: [barberWorkdayId], references: [id], onDelete: Cascade)
   barberWorkdayId  String
   startAtInMinutes Int
   endAtInMinutes   Int

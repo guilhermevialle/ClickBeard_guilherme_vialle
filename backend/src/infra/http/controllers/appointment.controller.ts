@@ -55,6 +55,10 @@ export class AppointmentController implements IAppointmentController {
 
     const { barberId, specialtyId, startAt } = result.data;
 
+    console.log({
+      startAt,
+    });
+
     const appointment = await this.createAppointment.execute({
       barberId,
       customerId: req.userId,

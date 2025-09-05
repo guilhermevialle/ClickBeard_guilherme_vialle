@@ -1,10 +1,10 @@
 {
   "name": "backend",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/server.ts",
+    "dev": "ts-node-dev --respawn --quiet --clear --transpile-only --ignore-watch node_modules src/server.ts",
     "test": "vitest",
     "test:file": "vitest --watch"
   },

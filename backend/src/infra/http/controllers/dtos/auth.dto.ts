@@ -16,3 +16,7 @@ export const authRegisterSchemaDto = z.object({
     .string("Password must be a string")
     .min(1, "Password is required"),
 });
+
+export const authRefreshTokenSchemaDto = z.object({
+  refreshToken: z.jwt("RefreshToken must be a valid JWT"),
+});
