@@ -9,6 +9,43 @@ export class PostgresPrismaAppointmentRepository
 {
   constructor(@inject("PrismaClient") private prisma: PrismaClientType) {}
 
+  async update(appointment: Appointment): Promise<void> {
+    await this.prisma.appointment.update({
+      where: {
+        id: appointment.id,
+      },
+      data: {
+        customerId: appointment.customerId,
+        barberId: appointment.barberId,
+        specialtyId: appointment.specialtyId,
+        startAt: appointment.startAt,
+        status: appointment.status,
+        durationInMinutes: appointment.durationInMinutes,
+        updatedAt: appointment.updatedAt,
+      },
+    });
+  }
+
+  async findById(id: string): Promise<Appointment | null> {
+    const appointment = await this.prisma.appointment.findUnique({
+      where: { id },
+    });
+
+    if (!appointment) return null;
+
+    return Appointment.from({
+      id: appointment.id,
+      customerId: appointment.customerId,
+      barberId: appointment.barberId,
+      specialtyId: appointment.specialtyId,
+      startAt: appointment.startAt,
+      status: appointment.status,
+      durationInMinutes: appointment.durationInMinutes,
+      createdAt: appointment.createdAt,
+      updatedAt: appointment.updatedAt,
+    });
+  }
+
   async save(appointment: Appointment): Promise<void> {
     await this.prisma.appointment.create({
       data: {
@@ -17,6 +54,7 @@ export class PostgresPrismaAppointmentRepository
         barberId: appointment.barberId,
         specialtyId: appointment.specialtyId,
         startAt: appointment.startAt,
+        status: appointment.status,
         durationInMinutes: appointment.durationInMinutes,
         createdAt: appointment.createdAt,
         updatedAt: appointment.updatedAt,
@@ -29,18 +67,19 @@ export class PostgresPrismaAppointmentRepository
       where: { customerId },
     });
 
-    return appointments.map((appointment) =>
-      Appointment.from({
+    return appointments.map((appointment) => {
+      return Appointment.from({
         id: appointment.id,
         customerId: appointment.customerId,
         barberId: appointment.barberId,
         specialtyId: appointment.specialtyId,
         startAt: appointment.startAt,
+        status: appointment.status,
         durationInMinutes: appointment.durationInMinutes,
         createdAt: appointment.createdAt,
         updatedAt: appointment.updatedAt,
-      })
-    );
+      });
+    });
   }
 
   async findByBarberId(barberId: string): Promise<Appointment[]> {
@@ -55,6 +94,7 @@ export class PostgresPrismaAppointmentRepository
         barberId: appointment.barberId,
         specialtyId: appointment.specialtyId,
         startAt: appointment.startAt,
+        status: appointment.status,
         durationInMinutes: appointment.durationInMinutes,
         createdAt: appointment.createdAt,
         updatedAt: appointment.updatedAt,
@@ -72,6 +112,7 @@ export class PostgresPrismaAppointmentRepository
         barberId: appointment.barberId,
         specialtyId: appointment.specialtyId,
         startAt: appointment.startAt,
+        status: appointment.status,
         durationInMinutes: appointment.durationInMinutes,
         createdAt: appointment.createdAt,
         updatedAt: appointment.updatedAt,

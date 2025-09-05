@@ -51,7 +51,9 @@ export class CreateAppointment {
     const customerAppointments =
       await this.appointmentRepo.findByCustomerId(customerId);
 
-    const hasActive = customerAppointments.some((a) => !a.wasFinished);
+    const hasActive = customerAppointments.some(
+      (a) => !a.wasFinished && a.status === "CONFIRMED"
+    );
 
     if (hasActive)
       throw new PendingAppointmentError(

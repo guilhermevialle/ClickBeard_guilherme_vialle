@@ -50,15 +50,22 @@ model Specialty {
   barbers           BarberSpecialty[]
 }
 
+enum AppointmentStatus {
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
 model Appointment {
-  id                String    @id
-  customer          Customer  @relation(fields: [customerId], references: [id])
+  id                String            @id
+  customer          Customer          @relation(fields: [customerId], references: [id])
   customerId        String
-  barber            Barber    @relation(fields: [barberId], references: [id])
+  barber            Barber            @relation(fields: [barberId], references: [id])
   barberId          String
-  specialty         Specialty @relation(fields: [specialtyId], references: [id])
+  specialty         Specialty         @relation(fields: [specialtyId], references: [id])
   specialtyId       String
   startAt           DateTime
+  status            AppointmentStatus
   durationInMinutes Int
   createdAt         DateTime
   updatedAt         DateTime

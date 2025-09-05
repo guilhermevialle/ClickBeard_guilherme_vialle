@@ -23,6 +23,10 @@ export const partialAppointmentSchema = z.object({
   id: idSchema().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
+  status: z
+    .enum(["CONFIRMED", "CANCELLED", "COMPLETED"])
+    .default("CONFIRMED")
+    .optional(),
 });
 
 // juntando tudo

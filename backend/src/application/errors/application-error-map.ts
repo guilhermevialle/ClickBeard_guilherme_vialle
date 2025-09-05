@@ -1,4 +1,9 @@
 export const APPLICATION_ERROR = {
+  APPOINTMENT_NOT_FOUND: {
+    message: "Appointment not found",
+    errorCode: "APPOINTMENT_NOT_FOUND",
+    statusCode: 404,
+  },
   BARBER_NOT_AVAILABLE: {
     message: "Barber not available",
     errorCode: "BARBER_NOT_AVAILABLE",

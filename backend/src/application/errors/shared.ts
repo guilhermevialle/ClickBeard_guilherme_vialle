@@ -51,6 +51,16 @@ export class BarberNotAvailableError extends ApplicationError {
   }
 }
 
+export class AppointmentNotFoundError extends ApplicationError {
+  constructor(message?: string) {
+    super({
+      message: message ?? APPLICATION_ERROR.APPOINTMENT_NOT_FOUND.message,
+      errorCode: APPLICATION_ERROR.APPOINTMENT_NOT_FOUND.errorCode,
+      statusCode: APPLICATION_ERROR.APPOINTMENT_NOT_FOUND.statusCode,
+    });
+  }
+}
+
 export class BarberNotFoundError extends ApplicationError {
   constructor(message?: string) {
     super({

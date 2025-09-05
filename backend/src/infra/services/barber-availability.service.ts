@@ -43,7 +43,12 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
 
     const dayAppointments = (
       await this.appointmentRepo.findByBarberId(barberId)
-    ).filter((a) => isSameDay(a.startAt, startAt));
+    ).filter(
+      (a) =>
+        isSameDay(a.startAt, startAt) &&
+        !a.wasFinished &&
+        a.status === "CONFIRMED"
+    );
 
     const end = addMinutes(startAt, SLOT_STEP_MINUTES);
 
@@ -82,7 +87,10 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
 
     const dayAppointments = (
       await this.appointmentRepo.findByBarberId(barberId)
-    ).filter((a) => isSameDay(a.startAt, date));
+    ).filter(
+      (a) =>
+        isSameDay(a.startAt, date) && !a.wasFinished && a.status === "CONFIRMED"
+    );
 
     const freeSlots = availableSlots.filter((minutes) => {
       const start = addMinutes(startOfDay(date), minutes);

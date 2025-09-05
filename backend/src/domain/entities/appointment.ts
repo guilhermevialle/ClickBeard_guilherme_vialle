@@ -1,4 +1,8 @@
-import { addMinutes, areIntervalsOverlapping } from "date-fns";
+import {
+  addMinutes,
+  areIntervalsOverlapping,
+  differenceInMinutes,
+} from "date-fns";
 import {
   AppointmentProps,
   appointmentSchema,
@@ -6,7 +10,11 @@ import {
   createAppointmentSchema,
 } from "../../interfaces/appointment.interface";
 import { generateEntityID } from "../../utils/generate-id";
-import { InvalidInputError } from "../errors/shared";
+import {
+  AppointmentAlreadyCompletedError,
+  CannotCancelAppointmentError,
+  InvalidInputError,
+} from "../errors/shared";
 
 export class Appointment {
   private props: AppointmentProps;
@@ -28,13 +36,15 @@ export class Appointment {
       specialtyId: result.data.specialtyId,
       durationInMinutes: result.data.durationInMinutes,
       startAt: result.data.startAt,
+      status: "CONFIRMED",
       createdAt: new Date(),
       updatedAt: new Date(),
     });
   }
 
-  static from(props: AppointmentProps) {
+  static from(props: AppointmentProps): Appointment {
     const result = appointmentSchema.safeParse(props);
+
     if (!result.success) {
       throw new InvalidInputError(result.error.message);
     }
@@ -45,10 +55,21 @@ export class Appointment {
       barberId: result.data.barberId,
       specialtyId: result.data.specialtyId,
       durationInMinutes: result.data.durationInMinutes,
+      status: result.data.status,
       startAt: result.data.startAt,
       createdAt: result.data.createdAt,
       updatedAt: result.data.updatedAt,
     });
+  }
+
+  private touch() {
+    this.props.updatedAt = new Date();
+  }
+
+  // private methods
+  private updateStatus(status: "CONFIRMED" | "CANCELLED" | "COMPLETED") {
+    this.props.status = status;
+    this.touch();
   }
 
   // public methods
@@ -69,6 +90,25 @@ export class Appointment {
     return areIntervalsOverlapping(otherRange, thisRange, { inclusive });
   }
 
+  public cancel() {
+    const now = new Date();
+
+    if (this.wasFinished)
+      throw new AppointmentAlreadyCompletedError(
+        `Appointment with id ${this.id} already completed.`
+      );
+
+    const minutesRemaining = differenceInMinutes(this.startAt, now);
+
+    if (minutesRemaining < 120) {
+      throw new CannotCancelAppointmentError(
+        "Cannot cancel an appointment less than 2 hours before it starts."
+      );
+    }
+
+    this.updateStatus("CANCELLED");
+  }
+
   public toJSON() {
     return {
       id: this.id,
@@ -76,6 +116,7 @@ export class Appointment {
       barberId: this.barberId,
       specialtyId: this.specialtyId,
       durationInMinutes: this.durationInMinutes,
+      status: this.status,
       startAt: this.startAt,
       endAt: this.endAt,
       createdAt: this.createdAt,
@@ -89,6 +130,9 @@ export class Appointment {
   }
   get customerId() {
     return this.props.customerId;
+  }
+  get status() {
+    return this.props.status;
   }
   get barberId() {
     return this.props.barberId;

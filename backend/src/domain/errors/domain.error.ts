@@ -1,7 +1,19 @@
 export const DOMAIN_ERROR = {
-  invalidInput: {
+  INVALID_INPUT: {
     message: "Invalid input data",
     errorCode: "INVALID_INPUT",
+  },
+  APPOINTMENT_ALREADY_COMPLETED: {
+    message: "Appointment already completed",
+    errorCode: "APPOINTMENT_ALREADY_COMPLETED",
+  },
+  APPOINTMENT_ALREADY_CANCELLED: {
+    message: "Appointment already cancelled",
+    errorCode: "APPOINTMENT_ALREADY_CANCELLED",
+  },
+  CANNOT_CANCEL_APPOINTMENT: {
+    message: "Cannot cancel appointment.",
+    errorCode: "CANNOT_CANCEL_APPOINTMENT",
   },
 };
 

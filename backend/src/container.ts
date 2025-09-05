@@ -1,4 +1,5 @@
 import { container } from "tsyringe";
+import { CancelAppointment } from "./application/use-cases/cancel-appointment";
 import { CreateAppointment } from "./application/use-cases/create-appointment";
 import { CreateBarberWithSpecialties } from "./application/use-cases/create-barber-with-specialties";
 import { CreateSpecialty } from "./application/use-cases/create-specialty";
@@ -7,6 +8,7 @@ import { GetAllBarberSpecialty } from "./application/use-cases/get-all-barber-sp
 import { GetAllBarbers } from "./application/use-cases/get-all-barbers";
 import { GetAllBarbersForBff } from "./application/use-cases/get-all-barbers-for-bff";
 import { GetAllSpecialties } from "./application/use-cases/get-all-specialties";
+import { GetCustomerAppointmentsBff } from "./application/use-cases/get-customer-appointments-bff";
 import { PrismaClient } from "./generated/prisma";
 import { AuthMiddleware } from "./infra/http/middlewares/auth.middleware";
 import { IAppointmentRepository } from "./infra/interfaces/repositories/appointment-repository.interface";
@@ -104,6 +106,14 @@ container.registerSingleton<FindBarberSlotsByDate>(
 container.registerSingleton<CreateAppointment>(
   "CreateAppointment",
   CreateAppointment
+);
+container.registerSingleton<GetCustomerAppointmentsBff>(
+  "GetCustomerAppointmentsBff",
+  GetCustomerAppointmentsBff
+);
+container.registerSingleton<CancelAppointment>(
+  "CancelAppointment",
+  CancelAppointment
 );
 
 // middlewares
