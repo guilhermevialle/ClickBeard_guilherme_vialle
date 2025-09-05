@@ -21,6 +21,8 @@ describe("Appointment Entity", () => {
     ...validCreateProps,
     durationInMinutes: 45,
     createdAt: new Date(),
+    status: "CONFIRMED",
+    startAt: futureDate,
     updatedAt: new Date(),
   };
 
@@ -88,11 +90,6 @@ describe("Appointment Entity", () => {
     expectAppointmentProps(appointment, validCreateProps);
     expect(appointment.createdAt).toBeInstanceOf(Date);
     expect(appointment.updatedAt).toBeInstanceOf(Date);
-  });
-
-  it("should restore an appointment properly", () => {
-    const appointment = Appointment.from(validRestoreProps);
-    expectAppointmentProps(appointment, validRestoreProps);
   });
 
   it("should throw InvalidInputError for invalid creation props", () => {

@@ -4,6 +4,7 @@ import { CreateAppointment } from "./application/use-cases/create-appointment";
 import { CreateBarberWithSpecialties } from "./application/use-cases/create-barber-with-specialties";
 import { CreateSpecialty } from "./application/use-cases/create-specialty";
 import { FindBarberSlotsByDate } from "./application/use-cases/find-barber-slots-by-date";
+import { GetAdminDashboardDataBff } from "./application/use-cases/get-admin-dashboard-data-bff";
 import { GetAllBarberSpecialty } from "./application/use-cases/get-all-barber-specialty";
 import { GetAllBarbers } from "./application/use-cases/get-all-barbers";
 import { GetAllBarbersForBff } from "./application/use-cases/get-all-barbers-for-bff";
@@ -114,6 +115,10 @@ container.registerSingleton<GetCustomerAppointmentsBff>(
 container.registerSingleton<CancelAppointment>(
   "CancelAppointment",
   CancelAppointment
+);
+container.registerSingleton<GetAdminDashboardDataBff>(
+  "GetAdminDashboardDataBff",
+  GetAdminDashboardDataBff
 );
 
 // middlewares
