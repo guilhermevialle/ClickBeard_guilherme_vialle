@@ -98,7 +98,6 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
             isDismissable
           >
             <Dialog>
-              {/* Navegação da semana */}
               <div className="mb-6 flex items-center justify-between">
                 <Button
                   onPress={prevWeek}
@@ -119,7 +118,6 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                 </Button>
               </div>
 
-              {/* Seleção do dia */}
               <div className="flex h-24 justify-between gap-3 px-2">
                 {weekDays.map((day) => {
                   const isSelected = isSameDay(day, date);
@@ -158,7 +156,6 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                 {format(weekDays[6], "d MMM yyyy", { locale: ptBR })}
               </div>
 
-              {/* Seleção do barbeiro */}
               <div className="mt-8">
                 <h4 className="text-xl font-medium text-neutral-200">
                   Selecione um barbeiro para {specialty.name}
@@ -204,7 +201,6 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                 </div>
               </div>
 
-              {/* Slots */}
               <div className="mt-6 flex h-64 items-center justify-center">
                 {showBarberSlots ? (
                   <div className="mt-6 grid size-full grid-cols-4 gap-3">
@@ -230,7 +226,6 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                 )}
               </div>
 
-              {/* Botão Agendar */}
               <div className="mt-8 flex h-10 w-full items-center justify-end">
                 {barberId && slot !== null && (
                   <button

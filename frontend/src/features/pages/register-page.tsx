@@ -34,7 +34,6 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const { session, saveSession } = useUserSession();
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -81,8 +80,6 @@ export default function RegisterPage() {
             <p className="mt-4 text-sm font-medium tracking-tight text-neutral-500">
               Preencha os dados abaixo para se cadastrar.
             </p>
-
-            {/* Name field */}
             <div className="mt-8">
               <div className="flex items-center gap-2">
                 <LucideUser className="size-4 text-neutral-500" />
@@ -106,8 +103,6 @@ export default function RegisterPage() {
                 {errors.name?.message}
               </p>
             </div>
-
-            {/* Email field */}
             <div className="mt-3">
               <div className="flex items-center gap-2">
                 <LucideMail className="size-4 text-neutral-500" />
@@ -131,8 +126,6 @@ export default function RegisterPage() {
                 {errors.email?.message}
               </p>
             </div>
-
-            {/* Password field */}
             <div className="mt-3">
               <div className="flex items-center gap-2">
                 <LucideLock className="size-4 text-neutral-500" />
@@ -167,8 +160,6 @@ export default function RegisterPage() {
                 {errors.password?.message}
               </p>
             </div>
-
-            {/* Confirm Password field */}
             <div className="mt-3">
               <div className="flex items-center gap-2">
                 <LucideLock className="size-4 text-neutral-500" />
@@ -182,7 +173,7 @@ export default function RegisterPage() {
               <div className="mt-1.5 flex h-11 w-full items-center gap-3 rounded-md bg-[#0d0d0d] px-3">
                 <input
                   id="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
+                  type={showPassword ? "text" : "password"}
                   {...register("confirmPassword")}
                   className="h-full flex-1 bg-transparent font-medium tracking-tight text-neutral-200 placeholder:font-medium placeholder:tracking-tight placeholder:text-neutral-700 focus:outline-none"
                   placeholder="Confirme sua senha"
@@ -190,9 +181,9 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   className="flex items-center justify-center"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showConfirmPassword ? (
+                  {showPassword ? (
                     <LucideEyeOff className="size-4 text-neutral-500" />
                   ) : (
                     <LucideEye className="size-4 text-neutral-500" />
@@ -203,7 +194,6 @@ export default function RegisterPage() {
                 {errors.confirmPassword?.message}
               </p>
             </div>
-
             <div className="mt-2 h-6">
               {mutation.isError && (
                 <p className="text-xs text-red-500">
@@ -212,7 +202,6 @@ export default function RegisterPage() {
                 </p>
               )}
             </div>
-
             <button
               type="submit"
               disabled={mutation.isPending}
@@ -220,7 +209,6 @@ export default function RegisterPage() {
             >
               {mutation.isPending ? "Criando conta..." : "Criar conta"}
             </button>
-
             <p className="mt-6 text-center">
               <span className="text-sm font-medium tracking-tight text-neutral-500">
                 Já possui uma conta?

@@ -64,7 +64,6 @@ export default function LoginPage() {
             <Link to="/">
               <LucideMoveLeft className="size-6 text-neutral-300 hover:opacity-85" />
             </Link>
-
             <h1 className="mt-3 bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-4xl leading-14 font-semibold tracking-tighter text-transparent">
               Fazer login
               <br />
@@ -73,8 +72,6 @@ export default function LoginPage() {
             <p className="mt-4 text-sm font-medium tracking-tight text-neutral-500">
               Acesse sua conta para continuar.
             </p>
-
-            {/* Email field */}
             <div className="mt-8">
               <div className="flex items-center gap-2">
                 <LucideMail className="size-4 text-neutral-500" />
@@ -98,8 +95,6 @@ export default function LoginPage() {
                 {errors.email?.message}
               </p>
             </div>
-
-            {/* Password field */}
             <div className="mt-3">
               <div className="flex items-center gap-2">
                 <LucideLock className="size-4 text-neutral-500" />
@@ -134,7 +129,6 @@ export default function LoginPage() {
                 {errors.password?.message}
               </p>
             </div>
-
             <div className="mt-2 h-6">
               {mutation.isError && (
                 <p className="text-xs text-red-500">
@@ -143,7 +137,6 @@ export default function LoginPage() {
                 </p>
               )}
             </div>
-
             <button
               type="submit"
               disabled={mutation.isPending}
@@ -151,7 +144,6 @@ export default function LoginPage() {
             >
               {mutation.isPending ? "Entrando..." : "Entrar"}
             </button>
-
             <p className="mt-6 text-center">
               <span className="text-sm font-medium tracking-tight text-neutral-500">
                 Não possui uma conta?
