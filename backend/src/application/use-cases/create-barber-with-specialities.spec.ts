@@ -67,7 +67,7 @@ describe("CreateBarberWithSpecialties Use-Case", () => {
     expect(barberRepoMock.save).toHaveBeenCalledWith(barber);
     expect(specialtyRepoMock.findById).toHaveBeenCalledTimes(2);
     expect(barberSpecialtyRepoMock.save).toHaveBeenCalledTimes(2);
-    // Optionally check that the saved BarberSpecialty objects have correct barberId
+
     barberSpecialtyRepoMock.save.mock.calls.forEach(([savedBs]) => {
       expect(savedBs).toHaveProperty("barberId", barber.id);
     });

@@ -16,12 +16,12 @@ export const app = fastify({
   logger: true,
 });
 
-// Desabilita TODA validação de schema - Swagger será apenas para documentação
+// desabilita TODA validação de schema - Swagger sera apenas para documentacao
 app.setValidatorCompiler(() => {
-  return () => true; // Sempre retorna true = nunca valida
+  return () => true; // sempre retorna true = nunca valida
 });
 
-// Desabilita também a serialização baseada em schema
+// desabilita tambem a serialização baseada em schema
 app.setSerializerCompiler(() => {
   return (data) => JSON.stringify(data);
 });
