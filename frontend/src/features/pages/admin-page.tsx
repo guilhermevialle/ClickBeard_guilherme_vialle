@@ -107,7 +107,6 @@ export default function AdminPage() {
                       #{id.slice(0, 6)}
                     </span>
                   </div>
-
                   <div className="flex-1 space-y-3">
                     <div className="space-y-2 text-sm">
                       <div className="flex items-center gap-2">
@@ -133,7 +132,6 @@ export default function AdminPage() {
                         </span>
                       </div>
                     </div>
-
                     <div className="flex items-center justify-between border-t border-neutral-800/50 pt-2">
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-neutral-200">
@@ -151,7 +149,6 @@ export default function AdminPage() {
                       </div>
                     </div>
                   </div>
-
                   <div className="space-y-3 border-t border-neutral-800/50 pt-4">
                     <div className="flex items-center justify-between">
                       <span

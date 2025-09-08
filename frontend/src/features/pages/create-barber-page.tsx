@@ -97,11 +97,9 @@ export default function RegisterBarberPage() {
           <h1 className="mt-3 bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-4xl font-semibold text-transparent">
             Cadastrar Barbeiro
           </h1>
-
           <p className="mt-4 text-sm font-medium tracking-tight text-neutral-500">
             Adicione um novo barbeiro ao sistema
           </p>
-
           <div className="mt-6">
             <label className="flex items-center gap-2 text-[13px] font-semibold text-neutral-500 uppercase">
               <LucideUser className="size-4 text-neutral-500" />
@@ -118,7 +116,6 @@ export default function RegisterBarberPage() {
               {errors.name?.message}
             </p>
           </div>
-
           <div className="mt-3">
             <label className="flex items-center gap-2 text-[13px] font-semibold text-neutral-500 uppercase">
               <LucideCalendarRange className="size-4 text-neutral-500" />
@@ -135,7 +132,6 @@ export default function RegisterBarberPage() {
               {errors.age?.message}
             </p>
           </div>
-
           <div className="mt-3">
             <label className="flex items-center gap-2 text-[13px] font-semibold text-neutral-500 uppercase">
               <LucideCalendar className="size-4 text-neutral-500" />
@@ -151,12 +147,10 @@ export default function RegisterBarberPage() {
               {errors.hireDate?.message}
             </p>
           </div>
-
           <div className="mt-3">
             <label className="flex items-center gap-2 text-[13px] font-semibold text-neutral-500 uppercase">
               Especialidades
             </label>
-
             {isLoading ? (
               <div className="mt-1.5 flex h-28 w-full items-center justify-center rounded-md bg-[#0d0d0d]">
                 <LucideLoader2 className="size-5 animate-spin text-neutral-500" />
@@ -203,7 +197,6 @@ export default function RegisterBarberPage() {
                 )}
               />
             )}
-
             <p className="mt-1 h-[18px] text-xs text-red-500">
               {errors.specialties?.message}
             </p>

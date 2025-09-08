@@ -88,7 +88,6 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
             {specialty.durationInMinutes} min
           </span>
         </Button>
-
         <ModalOverlay
           isDismissable
           className="absolute inset-0 z-50 flex h-screen w-full items-center justify-center bg-black/50 backdrop-blur-sm"
@@ -117,7 +116,6 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                   <LucideChevronRight className="h-4 w-4 text-neutral-300" />
                 </Button>
               </div>
-
               <div className="flex h-24 justify-between gap-3 px-2">
                 {weekDays.map((day) => {
                   const isSelected = isSameDay(day, date);
@@ -150,12 +148,10 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                   );
                 })}
               </div>
-
               <div className="mt-4 text-center text-sm text-neutral-500">
                 {format(weekDays[0], "d MMM", { locale: ptBR })} -{" "}
                 {format(weekDays[6], "d MMM yyyy", { locale: ptBR })}
               </div>
-
               <div className="mt-8">
                 <h4 className="text-xl font-medium text-neutral-200">
                   Selecione um barbeiro para {specialty.name}
@@ -200,7 +196,6 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                   )}
                 </div>
               </div>
-
               <div className="mt-6 flex h-64 items-center justify-center">
                 {showBarberSlots ? (
                   <div className="mt-6 grid size-full grid-cols-4 gap-3">
@@ -225,7 +220,6 @@ export default function ScheduleModal({ specialties }: ScheduleModalProps) {
                   </div>
                 )}
               </div>
-
               <div className="mt-8 flex h-10 w-full items-center justify-end">
                 {barberId && slot !== null && (
                   <button

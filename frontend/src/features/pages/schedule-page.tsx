@@ -44,7 +44,6 @@ export default function SchedulePage() {
             <h3 className="text-lg font-semibold tracking-tight text-neutral-200">
               Dias de atendimento
             </h3>
-
             <div className="mt-5 flex flex-col gap-3">
               {Array.from({
                 length: 7,
@@ -72,7 +71,6 @@ export default function SchedulePage() {
               })}
             </div>
           </div>
-
           <div className="size-96 rounded-3xl bg-[#1d1d1d]">
             <h3 className="px-6 py-4 text-lg font-semibold tracking-tight text-neutral-200">
               Selecione um serviço disponível

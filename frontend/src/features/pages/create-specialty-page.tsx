@@ -114,7 +114,6 @@ export default function CreateSpecialtyPage() {
               {errors.durationInMinutes?.message}
             </p>
           </div>
-
           <div className="mt-2 h-6">
             {mutation.isError && (
               <p className="text-xs text-red-500">
@@ -123,7 +122,6 @@ export default function CreateSpecialtyPage() {
               </p>
             )}
           </div>
-
           <button
             type="submit"
             disabled={mutation.isPending}
@@ -131,7 +129,6 @@ export default function CreateSpecialtyPage() {
           >
             {mutation.isPending ? "Cadastrando..." : "Cadastrar especialidade"}
           </button>
-
           <p className="mt-6 text-center">
             <span className="text-sm font-medium tracking-tight text-neutral-500">
               Já possui todas as especialidades?
